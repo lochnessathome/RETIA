@@ -1,0 +1,13 @@
+/[ \t]/     		{ /* Skip spaces and tabs. */ }
+/[0-9]+/ 		{ lval.s = yylex.Text(); return NUMBER }
+/(TUPLE|tuple)/         { lval.s = yylex.Text(); return TUPLE }
+/(INTEGER|integer)/     { lval.s = yylex.Text(); return INTEGER }
+/(RATIONAL|rational)/   { lval.s = yylex.Text(); return RATIONAL }
+/(CHAR|char)/           { lval.s = yylex.Text(); return CHAR }
+/(BOOLEAN|boolean)/     { lval.s = yylex.Text(); return BOOLEAN }
+/[a-zA-Z]+/             { lval.s = yylex.Text(); return ID }
+/./           		{ lval.s = yylex.Text(); return int(lval.s[0]) }
+//
+
+package main
+
