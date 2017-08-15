@@ -9,6 +9,9 @@
   attribute *Attribute
   attributes []*Attribute
 
+  component *Component
+  components []*Component
+
   tuple *Tuple
 }
 
@@ -30,13 +33,13 @@ line:			'\n'
 			;
 
 query:			tuple_heading					{ $$.tuple = $1.tuple }
-			| tuple_body					{ }
+			| tuple_body					{ $$.tuple = $1.tuple }
 			;
 
-tuple_heading:		TUPLE '{' attributes_commalist '}'		{ $$.tuple = NewTuple($3.attributes) }
+tuple_heading:		TUPLE '{' attributes_commalist '}'		{ $$.tuple = NewTupleHeading($3.attributes) }
 			;
 
-tuple_body:             TUPLE '{' components_commalist '}'
+tuple_body:             TUPLE '{' components_commalist '}'		{ $$.tuple = NewTupleBody($3.components) }
                         ;
 
 
@@ -44,14 +47,14 @@ attributes_commalist:	attribute					{ $$.attributes = append($$.attributes, $1.a
 			| attributes_commalist ',' attribute		{ $$.attributes = append($$.attributes, $3.attribute) }
 			;
 
-components_commalist:   component				
-                        | components_commalist ',' component	
+components_commalist:   component					{ $$.components = append($$.components, $1.component) }
+                        | components_commalist ',' component		{ $$.components = append($$.components, $3.component) }
                         ;
 
 attribute:	        attribute_name attribute_type			{ $$.attribute = NewAttribute($1.s, $2.s) }
                         ;
 
-component:		attribute_name attribute_type attribute_value
+component:		attribute_name attribute_type attribute_value	{ $$.component = NewComponent($1.s, $2.s, $3.s) }
                         ;
 
 attribute_name:		ID

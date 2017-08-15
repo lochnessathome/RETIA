@@ -34,16 +34,32 @@ func NewAttribute(aname, atype string) *Attribute {
   return &Attribute{aname, atype}
 }
 
-func NewTuple(attributes []*Attribute) *Tuple {
+func NewComponent(cname, ctype, cvalue string) *Component {
+  return &Component{cname, ctype, cvalue}
+}
+
+func NewTupleHeading(attributes []*Attribute) *Tuple {
   return &Tuple{attributes, nil}
+}
+
+func NewTupleBody(components []*Component) *Tuple {
+  return &Tuple{nil, components}
 }
 
 
 func (result *Result) Query(tuple *Tuple) {
   fmt.Printf("TUPLE { \n")
 
-  for _, attribute := range tuple.attributes {
-    fmt.Printf("        (%s %s) \n", attribute.aname, attribute.atype)
+  if tuple.attributes != nil {
+    for _, attribute := range tuple.attributes {
+      fmt.Printf("        (%s %s) \n", attribute.aname, attribute.atype)
+    }
+  }
+
+  if tuple.components != nil {
+    for _, component := range tuple.components {
+      fmt.Printf("        (%s %s %s) \n", component.cname, component.ctype, component.cvalue)
+    }
   }
 
   fmt.Printf("      } \n")
