@@ -16,12 +16,15 @@
 }
 
 %token ID
-%token NUMBER
 %token TUPLE
-%token INTEGER
-%token RATIONAL
-%token CHAR
-%token BOOLEAN
+%token T_INTEGER
+%token T_RATIONAL
+%token T_CHAR
+%token T_BOOLEAN
+%token V_INTEGER
+%token V_RATIONAL
+%token V_CHAR
+%token V_BOOLEAN
 
 %%
 input:				
@@ -63,12 +66,16 @@ attribute_name:		ID
 attribute_type:		built_in_type
 			;
 
-attribute_value:	NUMBER						{ fmt.Printf("attribute value %s \n", $1.s) }
+attribute_value:	V_INTEGER
+			| V_RATIONAL
+			| V_CHAR
+			| V_BOOLEAN
+			;
 
-built_in_type:		INTEGER
-			| RATIONAL
-			| CHAR
-			| BOOLEAN
+built_in_type:		T_INTEGER
+			| T_RATIONAL
+			| T_CHAR
+			| T_BOOLEAN
 			;
 
 %%

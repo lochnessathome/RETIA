@@ -1,13 +1,15 @@
-/[ \t]/     		{ /* Skip spaces and tabs. */ }
-/[0-9]+/ 		{ lval.s = yylex.Text(); return NUMBER }
-/(TUPLE|tuple)/         { lval.s = yylex.Text(); return TUPLE }
-/(INTEGER|integer)/     { lval.s = yylex.Text(); return INTEGER }
-/(RATIONAL|rational)/   { lval.s = yylex.Text(); return RATIONAL }
-/(CHAR|char)/           { lval.s = yylex.Text(); return CHAR }
-/(BOOLEAN|boolean)/     { lval.s = yylex.Text(); return BOOLEAN }
-/[a-zA-Z]+/             { lval.s = yylex.Text(); return ID }
-/./           		{ lval.s = yylex.Text(); return int(lval.s[0]) }
+/(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
+/(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
+/(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
+/(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }
+/(BOOLEAN|boolean)/     	{ lval.s = yylex.Text(); return T_BOOLEAN }
+/[0-9]+/                	{ lval.s = yylex.Text(); return V_INTEGER }
+/[0-9]+\.[0-9]+/        	{ lval.s = yylex.Text(); return V_RATIONAL }
+/"[ a-zA-Z0-9]*"/		{ lval.s = yylex.Text(); return V_CHAR /* TODO: escape quotes, punctuation symbols */ }
+/(TRUE|true|FALSE\false)/       { lval.s = yylex.Text(); return V_BOOLEAN }
+/[a-zA-Z]+/                     { lval.s = yylex.Text(); return ID }
+/[ \t]/                         { }
+/./           			{ lval.s = yylex.Text(); return int(lval.s[0]) }
 //
 
 package main
-
