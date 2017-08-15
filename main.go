@@ -11,8 +11,8 @@ type Result struct {
   data string
 }
 
-
 type Tuple struct {
+  name string
   attributes []*Attribute
   components []*Component
 }
@@ -39,16 +39,28 @@ func NewComponent(cname, ctype, cvalue string) *Component {
 }
 
 func NewTupleHeading(attributes []*Attribute) *Tuple {
-  return &Tuple{attributes, nil}
+  return &Tuple{"", attributes, nil}
 }
 
 func NewTupleBody(components []*Component) *Tuple {
-  return &Tuple{nil, components}
+  return &Tuple{"", nil, components}
+}
+
+func AssignTupleName(tuple *Tuple, variable string) {
+  if len(variable) != 0 {
+    tuple.name = variable
+  }
 }
 
 
 func (result *Result) Query(tuple *Tuple) {
-  fmt.Printf("TUPLE { \n")
+  fmt.Printf("TUPLE ")
+
+  if len(tuple.name) != 0 {
+    fmt.Printf("(%s) ", tuple.name)
+  }
+
+  fmt.Printf("{ \n")
 
   if tuple.attributes != nil {
     for _, attribute := range tuple.attributes {

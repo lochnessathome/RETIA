@@ -1,6 +1,5 @@
 %{
   package main
-  import "fmt"
 %}
 
 %union {
@@ -13,9 +12,12 @@
   components []*Component
 
   tuple *Tuple
+
+  variable string
 }
 
 %token ID
+%token ASSIGN
 %token TUPLE
 %token T_INTEGER
 %token T_RATIONAL
@@ -35,16 +37,17 @@ line:			'\n'
 			| query '\n'					{ cast(yylex).Query($1.tuple) }
 			;
 
-query:			tuple_heading					{ $$.tuple = $1.tuple }
-			| tuple_body					{ $$.tuple = $1.tuple }
+query:			tuple_heading					{ $$.tuple = $1.tuple; AssignTupleName($1.tuple, $1.variable) }
+			| tuple_body					{ $$.tuple = $1.tuple; AssignTupleName($1.tuple, $1.variable) }
 			;
 
 tuple_heading:		TUPLE '{' attributes_commalist '}'		{ $$.tuple = NewTupleHeading($3.attributes) }
+			| ID ASSIGN tuple_heading			{ $$.variable = $1.s; $$.tuple = $3.tuple }
 			;
 
 tuple_body:             TUPLE '{' components_commalist '}'		{ $$.tuple = NewTupleBody($3.components) }
+			| ID ASSIGN  tuple_body				{ $$.variable = $1.s; $$.tuple = $3.tuple }
                         ;
-
 
 attributes_commalist:	attribute					{ $$.attributes = append($$.attributes, $1.attribute) }
 			| attributes_commalist ',' attribute		{ $$.attributes = append($$.attributes, $3.attribute) }

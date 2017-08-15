@@ -7,9 +7,11 @@
 /[0-9]+\.[0-9]+/        	{ lval.s = yylex.Text(); return V_RATIONAL }
 /"[ a-zA-Z0-9]*"/		{ lval.s = yylex.Text(); return V_CHAR /* TODO: escape quotes, punctuation symbols */ }
 /(TRUE|true|FALSE\false)/       { lval.s = yylex.Text(); return V_BOOLEAN }
+/:=/       			{ lval.s = yylex.Text(); return ASSIGN }
 /[a-zA-Z]+/                     { lval.s = yylex.Text(); return ID }
 /[ \t]/                         { }
 /./           			{ lval.s = yylex.Text(); return int(lval.s[0]) }
 //
 
 package main
+
