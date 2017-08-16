@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/home/dmitriy/homework/bin/nex terminal-def.nex
+/home/dmitriy/homework/bin/nex -e=true terminal-def.nex
 
 go tool yacc productions.y
 

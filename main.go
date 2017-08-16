@@ -88,8 +88,12 @@ func atoi(s string) int64 {
 
 
 func main() {
+  yyErrorVerbose = true
+
   result := new(Result)
 
-  yyParse(NewLexerWithInit(os.Stdin, func(y *Lexer) { y.p = result }))
+  for {
+    yyParse(NewLexerWithInit(os.Stdin, func(y *Lexer) { y.p = result }))
+  }
 }
 
