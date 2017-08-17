@@ -1,17 +1,20 @@
 %{
   package main
+
+  import (
+    "RETIA/unit"
+    "RETIA/component"
+    "RETIA/tuple"
+  )
 %}
 
 %union {
   s string
 
-  attribute *Attribute
-  attributes []*Attribute
+  component *unit.Component
+  components []*unit.Component
 
-  component *Component
-  components []*Component
-
-  tuple *Tuple
+  tuple *unit.Tuple
 
   variable string
 }
@@ -37,30 +40,19 @@ line:			'\n'
 			| query '\n'					{ cast(yylex).Query($1.tuple) }
 			;
 
-query:			tuple_heading					{ $$.tuple = $1.tuple; AssignTupleName($1.tuple, $1.variable) }
-			| tuple_body					{ $$.tuple = $1.tuple; AssignTupleName($1.tuple, $1.variable) }
+query:			tuple						{ $$.tuple = $1.tuple }
 			;
 
-tuple_heading:		TUPLE '{' attributes_commalist '}'		{ $$.tuple = NewTupleHeading($3.attributes) }
-			| ID ASSIGN tuple_heading			{ $$.variable = $1.s; $$.tuple = $3.tuple }
-			;
 
-tuple_body:             TUPLE '{' components_commalist '}'		{ $$.tuple = NewTupleBody($3.components) }
-			| ID ASSIGN  tuple_body				{ $$.variable = $1.s; $$.tuple = $3.tuple }
+tuple:             	TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($3.components, "") }
+			| ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
-
-attributes_commalist:	attribute					{ $$.attributes = append($$.attributes, $1.attribute) }
-			| attributes_commalist ',' attribute		{ $$.attributes = append($$.attributes, $3.attribute) }
-			;
 
 components_commalist:   component					{ $$.components = append($$.components, $1.component) }
                         | components_commalist ',' component		{ $$.components = append($$.components, $3.component) }
                         ;
 
-attribute:	        attribute_name attribute_type			{ $$.attribute = NewAttribute($1.s, $2.s) }
-                        ;
-
-component:		attribute_name attribute_type attribute_value	{ $$.component = NewComponent($1.s, $2.s, $3.s) }
+component:		attribute_name attribute_type attribute_value	{ $$.component = component.Create($1.s, $2.s, $3.s) }
                         ;
 
 attribute_name:		ID
