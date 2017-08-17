@@ -20,7 +20,7 @@ func Create(components []*unit.Component, vname string) *unit.Tuple {
 
     sort.Sort(ByAname(components))
     for _, component := range components {
-      tuple.Tname = tuple.Tname + component.Aname + "=" + component.Atype + ";"
+      tuple.Tname = tuple.Tname + unit.FormatTypeStr(component.Aname, component.Atype)
     }
 
     tuple.Components = components

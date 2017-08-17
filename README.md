@@ -13,7 +13,7 @@ RETIA - акроним для RElaTIonal Algebra
 
 `RELATION { TUPLE { age integer 18, name char "Ivan" }, boy }` - создать неименнованное отношение, включив ранее заданный кортеж, указав его имя.
 
-`boys := RELATIONS { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }` - создать именованное отношение.
+`boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }` - создать именованное отношение.
 
 `boys` - прочитать переменную.
 

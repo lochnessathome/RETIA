@@ -24,7 +24,24 @@ type Relation struct {
 }
 
 
+type Where struct {
+  Relation *Relation
+  Compare *Compare
+}
+
+type Compare struct {
+  Laname string
+  Raname string
+  Rcvalue string
+  Rctype string
+  Operator string
+}
+
+
 func FormatLetter(letter string) (string) {
   return strings.ToLower(letter)  
 }
 
+func FormatTypeStr(aname, atype string) (string) {
+  return ("[" + aname + "=" + atype + "]")
+}

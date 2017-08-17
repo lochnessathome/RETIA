@@ -6,6 +6,9 @@
     "RETIA/component"
     "RETIA/tuple"
     "RETIA/relation"
+
+    "RETIA/compare"
+    "RETIA/where"
   )
 %}
 
@@ -20,12 +23,16 @@
   tuples []*unit.Tuple
 
   relation *unit.Relation
+
+  compare *unit.Compare
+  where *unit.Where
 }
 
 %token ID
 %token ASSIGN
 %token RELATION
 %token TUPLE
+%token WHERE
 %token T_INTEGER
 %token T_RATIONAL
 %token T_CHAR
@@ -34,6 +41,7 @@
 %token V_RATIONAL
 %token V_CHAR
 %token V_BOOLEAN
+%token V_COMPARE
 
 %%
 input:				
@@ -41,13 +49,14 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'					{ cast(yylex).Query($1.tuple, $1.relation) }
+			| query '\n'					{ cast(yylex).Query($1.tuple, $1.relation, $1.where) }
 			;
 
 query:			tuple						{ $$.tuple = $1.tuple }
 			| tuple_var					{ $$.tuple = $1.tuple }
 			| relation					{ $$.relation = $1.relation }
                         | relation_var                                  { $$.relation = $1.relation }
+			| where						{ $$.where = $1.where }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($3.tuples, "") }
@@ -67,6 +76,13 @@ tuple:             	TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Creat
 
 tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
+
+where:			relation WHERE '(' compare_expression ')'	{ $$.where = where.Create($1.relation, $4.compare) }
+			;
+
+compare_expression:	attribute_name V_COMPARE attribute_name		{ $$.compare = compare.Create($2.s, $1.s, $3.s, "", "") }
+			| attribute_name V_COMPARE component_value	{ $$.compare = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
+			;
 
 components_commalist:   component					{ $$.components = append($$.components, $1.component) }
                         | components_commalist ',' component		{ $$.components = append($$.components, $3.component) }

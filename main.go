@@ -14,7 +14,7 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, where *unit.Where) {
   if tuple != nil {
     if findRelation(session, tuple.Vname) == nil {
 
@@ -48,6 +48,55 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation) {
     } else {
       show.VnameBusy(relation.Vname)
     }
+  }
+
+  if where != nil {
+    show.Where(where)
+
+    nrel := new(unit.Relation)
+
+    nrel.Tname = where.Relation.Tname
+    nrel.Vname = where.Relation.Vname
+
+    compare := where.Compare
+
+    if len(compare.Raname) != 0 {
+      for _, tuple := range where.Relation.Tuples {
+        lvalue := ""
+        rvalue := ""
+
+        for _, component := range tuple.Components {
+          if component.Aname == compare.Laname {
+            lvalue = component.Cvalue
+          }
+
+          if component.Aname == compare.Raname {
+            rvalue = component.Cvalue
+          }
+
+          if lvalue == rvalue {
+            nrel.Tuples = append(nrel.Tuples, tuple)
+          }
+        }
+      }
+    } else {
+      for _, tuple := range where.Relation.Tuples {
+        for _, component := range tuple.Components {
+
+          if component.Aname == compare.Laname {
+            if component.Cvalue == compare.Rcvalue { 
+              nrel.Tuples = append(nrel.Tuples, tuple)
+            }
+          }
+
+        }
+      }
+    }
+
+  // return nrel
+
+  show.Relation(nrel)
+
   }
 }
 

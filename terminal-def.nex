@@ -1,5 +1,6 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
+/(WHERE|where)/                 { lval.s = yylex.Text(); return WHERE }
 /(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
 /(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
 /(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }
@@ -8,6 +9,7 @@
 /[0-9]+\.[0-9]+/        	{ lval.s = yylex.Text(); return V_RATIONAL }
 /"[ a-zA-Z0-9]*"/		{ lval.s = yylex.Text(); return V_CHAR /* TODO: escape quotes, punctuation symbols */ }
 /(TRUE|true|FALSE\false)/       { lval.s = yylex.Text(); return V_BOOLEAN }
+/(=|<>|>|>=|<|<=)/		{ lval.s = yylex.Text(); return V_COMPARE}
 /:=/       			{ lval.s = yylex.Text(); return ASSIGN }
 /[a-zA-Z]+/                     { lval.s = yylex.Text(); return ID }
 /[ \t]/                         { }

@@ -39,6 +39,21 @@ func VnameMissing(vname string) {
   fmt.Printf("Variable %s not found.\n", vname)
 }
 
+func Where(where *unit.Where) {
+  compare := where.Compare
+
+  fmt.Printf("WHERE ( \n")
+  fmt.Printf("        %s %s", compare.Laname, compare.Operator)
+
+  if len(compare.Raname) != 0 {
+    fmt.Printf(" %s \n", compare.Raname)
+  } else {
+    fmt.Printf(" %s \n", compare.Rcvalue)
+  }
+
+  fmt.Printf("      ) \n")
+}
+
 
 func showTuple(tuple *unit.Tuple, prefix string) {
   fmt.Printf("%sTUPLE ", prefix)
