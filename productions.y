@@ -48,13 +48,10 @@ query:			tuple						{ $$.tuple = $1.tuple }
 			| tuple_var					{ $$.tuple = $1.tuple }
 			| relation					{ $$.relation = $1.relation }
                         | relation_var                                  { $$.relation = $1.relation }
-			| var_call					{ $$.relation = $1.relation; $$.tuple = $1.tuple }						
-			;
-
-var_call:		ID						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($3.tuples, "") }
+			| ID 						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
 relation_var:		ID ASSIGN RELATION '{' tuples_commalist '}'	{ $$.relation = relation.Create($5.tuples, $1.s) }
@@ -65,6 +62,7 @@ tuples_commalist:   	tuple	                                        { $$.tuples =
                         ;
 
 tuple:             	TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($3.components, "") }
+			| ID						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
 tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
