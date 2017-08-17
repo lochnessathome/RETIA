@@ -16,27 +16,38 @@ type Session struct {
 
 func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation) {
   if tuple != nil {
-    foundTuple := findTuple(session, tuple.Vname)
+    if findRelation(session, tuple.Vname) == nil {
 
-    if foundTuple != nil {
-      *foundTuple = *tuple
+      foundTuple := findTuple(session, tuple.Vname)
+
+      if foundTuple != nil {
+        *foundTuple = *tuple
+      } else {
+        session.tuples = append(session.tuples, tuple)
+      }
+
+      show.Tuple(tuple)
+
     } else {
-      session.tuples = append(session.tuples, tuple)
+      show.VnameBusy(tuple.Vname)
     }
-
-    show.Tuple(tuple)
   }
 
   if relation != nil {
-    foundRelation := findRelation(session, relation.Vname)
-  
-    if foundRelation != nil {
-      *foundRelation = *relation
-    } else {
-      session.relations = append(session.relations, relation)
-    }
+    if findTuple(session, relation.Vname) == nil {
 
-    show.Relation(relation)
+      foundRelation := findRelation(session, relation.Vname) 
+  
+      if foundRelation != nil {
+        *foundRelation = *relation
+      } else {
+        session.relations = append(session.relations, relation)
+      }
+
+      show.Relation(relation)
+    } else {
+      show.VnameBusy(relation.Vname)
+    }
   }
 }
 
@@ -55,14 +66,18 @@ func (session *Session) Call(vname string) (*unit.Tuple, *unit.Relation) {
     return nil, foundRelation
   }
 
+  show.VnameMissing(vname)
+
   return nil, nil
 }
 
 
 func findTuple(session *Session, vname string) *unit.Tuple {
-  for _, tuple := range session.tuples {
-    if tuple.Vname == vname {
-      return tuple
+  if len(vname) != 0 {
+    for _, tuple := range session.tuples {
+      if tuple.Vname == vname {
+        return tuple
+      }
     }
   }
 
@@ -70,9 +85,11 @@ func findTuple(session *Session, vname string) *unit.Tuple {
 }
 
 func findRelation(session *Session, vname string) *unit.Relation {
-  for _, relation := range session.relations {
-    if relation.Vname == vname {
-      return relation
+  if len(vname) != 0 {
+    for _, relation := range session.relations {
+      if relation.Vname == vname {
+        return relation
+      }
     }
   }
 

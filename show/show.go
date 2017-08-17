@@ -31,6 +31,15 @@ func Relation(relation *unit.Relation) {
   fmt.Printf("         } \n")
 }
 
+func VnameBusy(vname string) {
+  fmt.Printf("Variable %s already exists.\n", vname)
+}
+
+func VnameMissing(vname string) {
+  fmt.Printf("Variable %s not found.\n", vname)
+}
+
+
 func showTuple(tuple *unit.Tuple, prefix string) {
   fmt.Printf("%sTUPLE ", prefix)
 
