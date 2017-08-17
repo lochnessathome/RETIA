@@ -1,5 +1,10 @@
 package unit
 
+import (
+  "strings"
+)
+
+
 type Component struct {
   Aname string
   Atype string
@@ -16,5 +21,10 @@ type Relation struct {
   Vname string
   Tname string
   Tuples []*Tuple
+}
+
+
+func FormatLetter(letter string) (string) {
+  return strings.ToLower(letter)  
 }
 

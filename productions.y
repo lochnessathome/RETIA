@@ -48,6 +48,10 @@ query:			tuple						{ $$.tuple = $1.tuple }
 			| tuple_var					{ $$.tuple = $1.tuple }
 			| relation					{ $$.relation = $1.relation }
                         | relation_var                                  { $$.relation = $1.relation }
+			| var_call					{ $$.relation = $1.relation; $$.tuple = $1.tuple }						
+			;
+
+var_call:		ID						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($3.tuples, "") }
@@ -93,5 +97,5 @@ built_in_type:		T_INTEGER
 
 %%
 
-func cast(y yyLexer) *Result { return y.(*Lexer).p }
+func cast(y yyLexer) *Session { return y.(*Lexer).p }
 

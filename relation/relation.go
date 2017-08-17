@@ -14,7 +14,7 @@ func Create(tuples []*unit.Tuple, vname string) *unit.Relation {
     relation.Tname = tuples[0].Tname
 
     relation.Tuples = tuples
-    relation.Vname = vname
+    relation.Vname = unit.FormatLetter(vname)
 
     return relation
   } else {

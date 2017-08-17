@@ -24,7 +24,7 @@ func Create(components []*unit.Component, vname string) *unit.Tuple {
     }
 
     tuple.Components = components
-    tuple.Vname = vname
+    tuple.Vname = unit.FormatLetter(vname)
 
     return tuple
   } else {
