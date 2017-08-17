@@ -1,11 +1,10 @@
 package main
 
 import (
-  "fmt"
   "os"
-  // "strconv"
 
   "RETIA/unit"
+  "RETIA/show"
 )
 
 type Result struct {
@@ -14,34 +13,9 @@ type Result struct {
 
 func (result *Result) Query(tuple *unit.Tuple) {
   if tuple != nil {
-    fmt.Printf("TUPLE ")
-
-    if len(tuple.Vname) != 0 {
-      fmt.Printf("(%s) ", tuple.Vname)
-    }
-
-    fmt.Printf("[%s] ", tuple.Tname)
-
-    fmt.Printf("{ \n")
-
-    if tuple.Components != nil {
-      for _, component := range tuple.Components {
-        fmt.Printf("        (%s %s %s) \n", component.Aname, component.Atype, component.Cvalue)
-      }
-    }
-
-    fmt.Printf("      } \n")
+    show.Tuple(tuple)
   }
 }
-
-
-/* func atoi(s string) int64 {
-  n, e := strconv.Atoi(s)
-  if e != nil {
-    panic(e)
-  }
-  return int64(n)
-} */
 
 
 func main() {

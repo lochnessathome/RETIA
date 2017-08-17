@@ -32,6 +32,7 @@ func Create(components []*unit.Component, vname string) *unit.Tuple {
   }
 }
 
+
 func componentsValid(components []*unit.Component) bool {
   for _, component := range components {
     if component == nil {
