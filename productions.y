@@ -10,13 +10,12 @@
 
 %union {
   s string
+  ctype string
 
   component *unit.Component
   components []*unit.Component
 
   tuple *unit.Tuple
-
-  variable string
 }
 
 %token ID
@@ -52,7 +51,7 @@ components_commalist:   component					{ $$.components = append($$.components, $1
                         | components_commalist ',' component		{ $$.components = append($$.components, $3.component) }
                         ;
 
-component:		attribute_name attribute_type attribute_value	{ $$.component = component.Create($1.s, $2.s, $3.s) }
+component:		attribute_name attribute_type component_value	{ $$.component = component.Create($1.s, $2.s, $3.s, $3.ctype) }
                         ;
 
 attribute_name:		ID
@@ -61,10 +60,10 @@ attribute_name:		ID
 attribute_type:		built_in_type
 			;
 
-attribute_value:	V_INTEGER
-			| V_RATIONAL
-			| V_CHAR
-			| V_BOOLEAN
+component_value:	V_INTEGER					{ $$.ctype = "integer" }
+			| V_RATIONAL					{ $$.ctype = "rational" }
+			| V_CHAR					{ $$.ctype = "char" }
+			| V_BOOLEAN					{ $$.ctype = "boolean" }
 			;
 
 built_in_type:		T_INTEGER

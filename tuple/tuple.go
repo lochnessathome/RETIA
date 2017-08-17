@@ -15,16 +15,30 @@ func (a ByAname) Less(i, j int) bool { return a[i].Aname < a[j].Aname }
 
 
 func Create(components []*unit.Component, vname string) *unit.Tuple {
-  tuple := new(unit.Tuple)
+  if componentsValid(components) {
+    tuple := new(unit.Tuple)
 
-  sort.Sort(ByAname(components))
+    sort.Sort(ByAname(components))
+    for _, component := range components {
+      tuple.Tname = tuple.Tname + component.Aname + "=" + component.Atype + ";"
+    }
+
+    tuple.Components = components
+    tuple.Vname = vname
+
+    return tuple
+  } else {
+    return nil
+  }
+}
+
+func componentsValid(components []*unit.Component) bool {
   for _, component := range components {
-    tuple.Tname = tuple.Tname + component.Aname + "=" + component.Atype + ";"
+    if component == nil {
+      return false
+    }
   }
 
-  tuple.Components = components
-  tuple.Vname = vname
-
-  return tuple
+  return true
 }
 

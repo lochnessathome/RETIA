@@ -3,7 +3,7 @@ package main
 import (
   "fmt"
   "os"
-  "strconv"
+  // "strconv"
 
   "RETIA/unit"
 )
@@ -13,33 +13,35 @@ type Result struct {
 }
 
 func (result *Result) Query(tuple *unit.Tuple) {
-  fmt.Printf("TUPLE ")
+  if tuple != nil {
+    fmt.Printf("TUPLE ")
 
-  if len(tuple.Vname) != 0 {
-    fmt.Printf("(%s) ", tuple.Vname)
-  }
-
-  fmt.Printf("[%s] ", tuple.Tname)
-
-  fmt.Printf("{ \n")
-
-  if tuple.Components != nil {
-    for _, component := range tuple.Components {
-      fmt.Printf("        (%s %s %s) \n", component.Aname, component.Atype, component.Cvalue)
+    if len(tuple.Vname) != 0 {
+      fmt.Printf("(%s) ", tuple.Vname)
     }
-  }
 
-  fmt.Printf("      } \n")
+    fmt.Printf("[%s] ", tuple.Tname)
+
+    fmt.Printf("{ \n")
+
+    if tuple.Components != nil {
+      for _, component := range tuple.Components {
+        fmt.Printf("        (%s %s %s) \n", component.Aname, component.Atype, component.Cvalue)
+      }
+    }
+
+    fmt.Printf("      } \n")
+  }
 }
 
 
-func atoi(s string) int64 {
+/* func atoi(s string) int64 {
   n, e := strconv.Atoi(s)
   if e != nil {
     panic(e)
   }
   return int64(n)
-}
+} */
 
 
 func main() {
