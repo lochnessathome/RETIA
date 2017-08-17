@@ -1,4 +1,5 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
+/(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
 /(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
 /(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
 /(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }

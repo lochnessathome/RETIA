@@ -18,7 +18,7 @@ func Create(aname, atype, cvalue, ctype string) *unit.Component {
 
     return component
   } else {
-    fmt.Printf("%s should be type of %s.\n", cvalue, strings.ToLower(atype))
+    fmt.Printf("Given component %s has type %s. Expected type is %s. \n", cvalue, ctype, strings.ToLower(atype))
 
     return nil
   }

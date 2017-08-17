@@ -12,4 +12,9 @@ type Tuple struct {
   Components []*Component
 }
 
+type Relation struct {
+  Vname string
+  Tname string
+  Tuples []*Tuple
+}
 

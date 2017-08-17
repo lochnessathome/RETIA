@@ -8,7 +8,31 @@ import (
 
 
 func Tuple(tuple *unit.Tuple) {
-  fmt.Printf("TUPLE ")
+  showTuple(tuple, "")
+}
+
+func Relation(relation *unit.Relation) {
+  fmt.Printf("RELATION ")
+
+  if len(relation.Vname) != 0 {
+    fmt.Printf("(%s) ", relation.Vname)
+  }
+
+  fmt.Printf("[%s] ", relation.Tname)
+
+  fmt.Printf("{ \n")
+
+  if relation.Tuples != nil {
+    for _, tuple := range relation.Tuples {
+      showTuple(tuple, "         ")
+    }
+  }
+
+  fmt.Printf("         } \n")
+}
+
+func showTuple(tuple *unit.Tuple, prefix string) {
+  fmt.Printf("%sTUPLE ", prefix)
 
   if len(tuple.Vname) != 0 {
     fmt.Printf("(%s) ", tuple.Vname)
@@ -20,10 +44,10 @@ func Tuple(tuple *unit.Tuple) {
 
   if tuple.Components != nil {
     for _, component := range tuple.Components {
-      fmt.Printf("        (%s %s %s) \n", component.Aname, component.Atype, component.Cvalue)
+      fmt.Printf("%s        (%s %s %s) \n", prefix, component.Aname, component.Atype, component.Cvalue)
     }
   }
 
-  fmt.Printf("      } \n")
+  fmt.Printf("%s      } \n", prefix)
 }
 

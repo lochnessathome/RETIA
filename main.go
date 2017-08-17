@@ -11,9 +11,13 @@ type Result struct {
   data string
 }
 
-func (result *Result) Query(tuple *unit.Tuple) {
+func (result *Result) Query(tuple *unit.Tuple, relation *unit.Relation) {
   if tuple != nil {
     show.Tuple(tuple)
+  }
+
+  if relation != nil {
+    show.Relation(relation)
   }
 }
 

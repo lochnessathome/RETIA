@@ -5,6 +5,7 @@
     "RETIA/unit"
     "RETIA/component"
     "RETIA/tuple"
+    "RETIA/relation"
   )
 %}
 
@@ -16,10 +17,14 @@
   components []*unit.Component
 
   tuple *unit.Tuple
+  tuples []*unit.Tuple
+
+  relation *unit.Relation
 }
 
 %token ID
 %token ASSIGN
+%token RELATION
 %token TUPLE
 %token T_INTEGER
 %token T_RATIONAL
@@ -36,15 +41,29 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'					{ cast(yylex).Query($1.tuple) }
+			| query '\n'					{ cast(yylex).Query($1.tuple, $1.relation) }
 			;
 
 query:			tuple						{ $$.tuple = $1.tuple }
+			| tuple_var					{ $$.tuple = $1.tuple }
+			| relation					{ $$.relation = $1.relation }
+                        | relation_var                                  { $$.relation = $1.relation }
 			;
 
+relation:		RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($3.tuples, "") }
+			;
+
+relation_var:		ID ASSIGN RELATION '{' tuples_commalist '}'	{ $$.relation = relation.Create($5.tuples, $1.s) }
+			;
+
+tuples_commalist:   	tuple	                                        { $$.tuples = append($$.tuples, $1.tuple) }
+                        | tuples_commalist ',' tuple		        { $$.tuples = append($$.tuples, $3.tuple) }
+                        ;
 
 tuple:             	TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($3.components, "") }
-			| ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
+			;
+
+tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
 
 components_commalist:   component					{ $$.components = append($$.components, $1.component) }
