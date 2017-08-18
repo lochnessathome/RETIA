@@ -25,6 +25,7 @@ type Relation struct {
 
 
 type Where struct {
+  Vname string
   Relation *Relation
   Compare *Compare
 }

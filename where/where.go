@@ -8,12 +8,14 @@ import (
 )
 
 
-func Create(relation *unit.Relation, compare *unit.Compare) *unit.Where {
+func Create(relation *unit.Relation, compare *unit.Compare, vname string) *unit.Where {
   if attributesValid(relation, compare) {
     where := new(unit.Where)
 
     where.Relation = relation
     where.Compare = compare
+
+    where.Vname = unit.FormatLetter(vname)
 
     return where
   } else {
@@ -26,7 +28,7 @@ func Eval(where *unit.Where) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = where.Relation.Tname
-  relation.Vname = where.Relation.Vname
+  relation.Vname = where.Vname
 
   compare := where.Compare
 

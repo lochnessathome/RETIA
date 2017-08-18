@@ -49,46 +49,50 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'					{ cast(yylex).Query($1.tuple, $1.relation, $1.where) }
+			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.where) }
 			;
 
-query:			tuple						{ $$.tuple = $1.tuple }
-			| tuple_var					{ $$.tuple = $1.tuple }
-			| relation					{ $$.relation = $1.relation }
-                        | relation_var                                  { $$.relation = $1.relation }
-			| where						{ $$.where = $1.where }
+query:			tuple							{ $$.tuple = $1.tuple }
+			| tuple_var						{ $$.tuple = $1.tuple }
+			| relation						{ $$.relation = $1.relation }
+                        | relation_var                                  	{ $$.relation = $1.relation }
+			| where							{ $$.where = $1.where }
+                        | where_var                                     	{ $$.where = $1.where }
 			;
 
-relation:		RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($3.tuples, "") }
-			| ID 						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
+relation:		RELATION '{' tuples_commalist '}'			{ $$.relation = relation.Create($3.tuples, "") }
+			| ID 							{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
-relation_var:		ID ASSIGN RELATION '{' tuples_commalist '}'	{ $$.relation = relation.Create($5.tuples, $1.s) }
+relation_var:		ID ASSIGN RELATION '{' tuples_commalist '}'		{ $$.relation = relation.Create($5.tuples, $1.s) }
 			;
 
-tuples_commalist:   	tuple	                                        { $$.tuples = append($$.tuples, $1.tuple) }
-                        | tuples_commalist ',' tuple		        { $$.tuples = append($$.tuples, $3.tuple) }
+tuples_commalist:   	tuple	                                        	{ $$.tuples = append($$.tuples, $1.tuple) }
+                        | tuples_commalist ',' tuple		        	{ $$.tuples = append($$.tuples, $3.tuple) }
                         ;
 
-tuple:             	TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($3.components, "") }
-			| ID						{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
+tuple:             	TUPLE '{' components_commalist '}'			{ $$.tuple = tuple.Create($3.components, "") }
+			| ID							{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 			;
 
-tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'	{ $$.tuple = tuple.Create($5.components, $1.s) }
+tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
 
-where:			relation WHERE '(' compare_expression ')'	{ $$.where = where.Create($1.relation, $4.compare) }
+where:			relation WHERE '(' compare_expression ')'		{ $$.where = where.Create($1.relation, $4.compare, "") }
 			;
 
-compare_expression:	attribute_name V_COMPARE attribute_name		{ $$.compare = compare.Create($2.s, $1.s, $3.s, "", "") }
-			| attribute_name V_COMPARE component_value	{ $$.compare = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
-			;
-
-components_commalist:   component					{ $$.components = append($$.components, $1.component) }
-                        | components_commalist ',' component		{ $$.components = append($$.components, $3.component) }
+where_var:              ID ASSIGN relation WHERE '(' compare_expression ')'     { $$.where = where.Create($3.relation, $6.compare, $1.s) }
                         ;
 
-component:		attribute_name attribute_type component_value	{ $$.component = component.Create($1.s, $2.s, $3.s, $3.ctype) }
+compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare = compare.Create($2.s, $1.s, $3.s, "", "") }
+			| attribute_name V_COMPARE component_value		{ $$.compare = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
+			;
+
+components_commalist:   component						{ $$.components = append($$.components, $1.component) }
+                        | components_commalist ',' component			{ $$.components = append($$.components, $3.component) }
+                        ;
+
+component:		attribute_name attribute_type component_value		{ $$.component = component.Create($1.s, $2.s, $3.s, $3.ctype) }
                         ;
 
 attribute_name:		ID
@@ -97,10 +101,10 @@ attribute_name:		ID
 attribute_type:		built_in_type
 			;
 
-component_value:	V_INTEGER					{ $$.ctype = "integer" }
-			| V_RATIONAL					{ $$.ctype = "rational" }
-			| V_CHAR					{ $$.ctype = "char" }
-			| V_BOOLEAN					{ $$.ctype = "boolean" }
+component_value:	V_INTEGER						{ $$.ctype = "integer" }
+			| V_RATIONAL						{ $$.ctype = "rational" }
+			| V_CHAR						{ $$.ctype = "char" }
+			| V_BOOLEAN						{ $$.ctype = "boolean" }
 			;
 
 built_in_type:		T_INTEGER

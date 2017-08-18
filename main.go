@@ -56,7 +56,7 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, op_whe
 
     erelation := where.Eval(op_where)
 
-    show.Relation(erelation)
+    session.Query(nil, erelation, nil)
   }
 }
 
