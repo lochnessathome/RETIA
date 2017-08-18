@@ -3,11 +3,15 @@ RETIA - акроним для RElaTIonal Algebra
 
 ## Примеры использования
 
+### Кортежи
+
 `TUPLE { age integer 18, name char "Ivan" }` - создать неименнованный кортеж.
 
 `boy := TUPLE { age integer 16, name char "Alexander" }` - создать именованный кортеж.
 
 `boy` - прочитать переменную.
+
+### Отношения
 
 `RELATION { TUPLE { age integer 18, name char "Ivan" } }` - создать неименнованное отношение.
 
@@ -16,6 +20,10 @@ RETIA - акроним для RElaTIonal Algebra
 `boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }` - создать именованное отношение.
 
 `boys` - прочитать переменную.
+
+### Сокращение (WHERE)
+
+`RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } } WHERE ( age >= 16 )` - произвести сокращение, создать новое неименованное отношение.
 
 `boys WHERE ( age > 16 )` - произвести сокращение, создать новое неименованное отношение.
 
