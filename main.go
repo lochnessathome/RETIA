@@ -4,6 +4,7 @@ import (
   "os"
 
   "RETIA/unit"
+  "RETIA/where"
   "RETIA/show"
 )
 
@@ -14,7 +15,7 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, where *unit.Where) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, op_where *unit.Where) {
   if tuple != nil {
     if findRelation(session, tuple.Vname) == nil {
 
@@ -50,53 +51,12 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, where 
     }
   }
 
-  if where != nil {
-    show.Where(where)
+  if op_where != nil {
+    // show.Where(where)
 
-    nrel := new(unit.Relation)
+    erelation := where.Eval(op_where)
 
-    nrel.Tname = where.Relation.Tname
-    nrel.Vname = where.Relation.Vname
-
-    compare := where.Compare
-
-    if len(compare.Raname) != 0 {
-      for _, tuple := range where.Relation.Tuples {
-        lvalue := ""
-        rvalue := ""
-
-        for _, component := range tuple.Components {
-          if component.Aname == compare.Laname {
-            lvalue = component.Cvalue
-          }
-
-          if component.Aname == compare.Raname {
-            rvalue = component.Cvalue
-          }
-
-          if lvalue == rvalue {
-            nrel.Tuples = append(nrel.Tuples, tuple)
-          }
-        }
-      }
-    } else {
-      for _, tuple := range where.Relation.Tuples {
-        for _, component := range tuple.Components {
-
-          if component.Aname == compare.Laname {
-            if component.Cvalue == compare.Rcvalue { 
-              nrel.Tuples = append(nrel.Tuples, tuple)
-            }
-          }
-
-        }
-      }
-    }
-
-  // return nrel
-
-  show.Relation(nrel)
-
+    show.Relation(erelation)
   }
 }
 
