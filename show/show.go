@@ -18,7 +18,7 @@ func Relation(relation *unit.Relation) {
     fmt.Printf("(%s) ", relation.Vname)
   }
 
-  fmt.Printf("[%s] ", relation.Tname)
+  // fmt.Printf("[%s] ", relation.Tname)
 
   fmt.Printf("{ \n")
 
@@ -39,16 +39,16 @@ func VnameMissing(vname string) {
   fmt.Printf("Variable %s not found.\n", vname)
 }
 
-func Where(where *unit.Where) {
-  compare := where.Compare
+func Reduction(statement *unit.ReductionStatement) {
+  expr := statement.CompareExpression
 
   fmt.Printf("WHERE ( \n")
-  fmt.Printf("        %s %s", compare.Laname, compare.Operator)
+  fmt.Printf("        %s %s", expr.Laname, expr.Operator)
 
-  if len(compare.Raname) != 0 {
-    fmt.Printf(" %s \n", compare.Raname)
+  if len(expr.Raname) != 0 {
+    fmt.Printf(" %s \n", expr.Raname)
   } else {
-    fmt.Printf(" %s \n", compare.Rcvalue)
+    fmt.Printf(" %s \n", expr.Rcvalue)
   }
 
   fmt.Printf("      ) \n")
@@ -62,7 +62,7 @@ func showTuple(tuple *unit.Tuple, prefix string) {
     fmt.Printf("(%s) ", tuple.Vname)
   }
 
-  fmt.Printf("[%s] ", tuple.Tname)
+  // fmt.Printf("[%s] ", tuple.Tname)
 
   fmt.Printf("{ \n")
 

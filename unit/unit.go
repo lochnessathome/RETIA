@@ -24,13 +24,13 @@ type Relation struct {
 }
 
 
-type Where struct {
+type ReductionStatement struct {
   Vname string
   Relation *Relation
-  Compare *Compare
+  CompareExpression *CompareExpression
 }
 
-type Compare struct {
+type CompareExpression struct {
   Laname string
   Raname string
   Rcvalue string

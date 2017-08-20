@@ -4,7 +4,7 @@ import (
   "os"
 
   "RETIA/unit"
-  "RETIA/where"
+  "RETIA/reduction"
   "RETIA/show"
 )
 
@@ -15,7 +15,7 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, op_where *unit.Where) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement) {
   if tuple != nil {
     if findRelation(session, tuple.Vname) == nil {
 
@@ -51,10 +51,8 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, op_whe
     }
   }
 
-  if op_where != nil {
-    // show.Where(where)
-
-    erelation := where.Eval(op_where)
+  if reduction_st != nil {
+    erelation := reduction.Eval(reduction_st)
 
     session.Query(nil, erelation, nil)
   }

@@ -8,7 +8,7 @@
     "RETIA/relation"
 
     "RETIA/compare"
-    "RETIA/where"
+    "RETIA/reduction"
   )
 %}
 
@@ -24,15 +24,15 @@
 
   relation *unit.Relation
 
-  compare *unit.Compare
-  where *unit.Where
+  compare_expr *unit.CompareExpression
+  reduction_st *unit.ReductionStatement
 }
 
 %token ID
 %token ASSIGN
 %token RELATION
 %token TUPLE
-%token WHERE
+%token REDUCTION
 %token T_INTEGER
 %token T_RATIONAL
 %token T_CHAR
@@ -49,15 +49,15 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.where) }
+			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st) }
 			;
 
 query:			tuple							{ $$.tuple = $1.tuple }
 			| tuple_var						{ $$.tuple = $1.tuple }
 			| relation						{ $$.relation = $1.relation }
                         | relation_var                                  	{ $$.relation = $1.relation }
-			| where							{ $$.where = $1.where }
-                        | where_var                                     	{ $$.where = $1.where }
+			| reduction						{ $$.reduction_st = $1.reduction_st }
+                        | reduction_var                                     	{ $$.reduction_st = $1.reduction_st }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'			{ $$.relation = relation.Create($3.tuples, "") }
@@ -78,14 +78,14 @@ tuple:             	TUPLE '{' components_commalist '}'			{ $$.tuple = tuple.Crea
 tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
 
-where:			relation WHERE '(' compare_expression ')'		{ $$.where = where.Create($1.relation, $4.compare, "") }
+reduction:		relation REDUCTION '(' compare_expression ')'		{ $$.reduction_st = reduction.Create($1.relation, $4.compare_expr, "") }
 			;
 
-where_var:              ID ASSIGN relation WHERE '(' compare_expression ')'     { $$.where = where.Create($3.relation, $6.compare, $1.s) }
+reduction_var:          ID ASSIGN relation REDUCTION '(' compare_expression ')' { $$.reduction_st = reduction.Create($3.relation, $6.compare_expr, $1.s) }
                         ;
 
-compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare = compare.Create($2.s, $1.s, $3.s, "", "") }
-			| attribute_name V_COMPARE component_value		{ $$.compare = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
+compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare_expr = compare.Create($2.s, $1.s, $3.s, "", "") }
+			| attribute_name V_COMPARE component_value		{ $$.compare_expr = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
 			;
 
 components_commalist:   component						{ $$.components = append($$.components, $1.component) }

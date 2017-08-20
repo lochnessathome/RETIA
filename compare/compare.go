@@ -5,19 +5,19 @@ import (
 )
 
 
-func Create(operator, laname, raname, rcvalue, rctype string) *unit.Compare {
-  compare := new(unit.Compare)
+func Create(operator, laname, raname, rcvalue, rctype string) *unit.CompareExpression {
+  expr := new(unit.CompareExpression)
 
-  compare.Operator = operator
-  compare.Laname = unit.FormatLetter(laname)
+  expr.Operator = operator
+  expr.Laname = unit.FormatLetter(laname)
 
   if len(raname) != 0 {
-    compare.Raname = unit.FormatLetter(raname)
+    expr.Raname = unit.FormatLetter(raname)
   } else {
-    compare.Rcvalue = rcvalue
-    compare.Rctype = rctype
+    expr.Rcvalue = rcvalue
+    expr.Rctype = rctype
   }
 
-  return compare
+  return expr
 }
 

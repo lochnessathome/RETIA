@@ -1,6 +1,6 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
-/(WHERE|where)/                 { lval.s = yylex.Text(); return WHERE }
+/(WHERE|where)/                 { lval.s = yylex.Text(); return REDUCTION }
 /(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
 /(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
 /(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }

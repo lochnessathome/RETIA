@@ -1,4 +1,4 @@
-package where
+package reduction
 
 import (
   "fmt"
@@ -8,39 +8,39 @@ import (
 )
 
 
-func Create(relation *unit.Relation, compare *unit.Compare, vname string) *unit.Where {
-  if attributesValid(relation, compare) {
-    where := new(unit.Where)
+func Create(relation *unit.Relation, expr *unit.CompareExpression, vname string) *unit.ReductionStatement {
+  if attributesValid(relation, expr) {
+    statement := new(unit.ReductionStatement)
 
-    where.Relation = relation
-    where.Compare = compare
+    statement.Relation = relation
+    statement.CompareExpression = expr
 
-    where.Vname = unit.FormatLetter(vname)
+    statement.Vname = unit.FormatLetter(vname)
 
-    return where
+    return statement
   } else {
     return nil
   }
 }
 
 
-func Eval(where *unit.Where) *unit.Relation {
+func Eval(statement *unit.ReductionStatement) *unit.Relation {
   relation := new(unit.Relation)
 
-  relation.Tname = where.Relation.Tname
-  relation.Vname = where.Vname
+  relation.Tname = statement.Relation.Tname
+  relation.Vname = statement.Vname
 
-  compare := where.Compare
+  expr := statement.CompareExpression
 
-  if len(compare.Raname) != 0 {
-    for _, tuple := range where.Relation.Tuples {
-      if tupleAttrsMatches(tuple, compare.Operator, compare.Laname, compare.Raname) {
+  if len(expr.Raname) != 0 {
+    for _, tuple := range statement.Relation.Tuples {
+      if tupleAttrsMatches(tuple, expr.Operator, expr.Laname, expr.Raname) {
         relation.Tuples = append(relation.Tuples, tuple)
       }
     }
   } else {
-    for _, tuple := range where.Relation.Tuples {
-      if tupleValuesMatches(tuple, compare.Operator, compare.Laname, compare.Rcvalue) {
+    for _, tuple := range statement.Relation.Tuples {
+      if tupleValuesMatches(tuple, expr.Operator, expr.Laname, expr.Rcvalue) {
         relation.Tuples = append(relation.Tuples, tuple)
       }
     }
@@ -50,28 +50,28 @@ func Eval(where *unit.Where) *unit.Relation {
 }
 
 
-func attributesValid(relation *unit.Relation, compare *unit.Compare) bool {
+func attributesValid(relation *unit.Relation, expr *unit.CompareExpression) bool {
   loptype := ""
   roptype := ""
 
-  _, loptype = findAttrByName(relation, compare.Laname)
+  _, loptype = findAttrByName(relation, expr.Laname)
 
   if len(loptype) == 0 {
-    fmt.Printf("Given attribute %s not found in relation %s. \n", compare.Laname, relation.Vname)
+    fmt.Printf("Given attribute %s not found in relation %s. \n", expr.Laname, relation.Vname)
 
     return false
   }
 
-  if len(compare.Raname) != 0 {
-    _, roptype = findAttrByName(relation, compare.Raname)
+  if len(expr.Raname) != 0 {
+    _, roptype = findAttrByName(relation, expr.Raname)
 
     if len(roptype) == 0 {
-      fmt.Printf("Given attribute %s not found in relation %s. \n", compare.Raname, relation.Vname)
+      fmt.Printf("Given attribute %s not found in relation %s. \n", expr.Raname, relation.Vname)
 
       return false
     }
   } else {
-    roptype = compare.Rctype
+    roptype = expr.Rctype
   }
 
   if loptype != roptype {
@@ -80,8 +80,8 @@ func attributesValid(relation *unit.Relation, compare *unit.Compare) bool {
     return false
   }
 
-  if !operationPermitted(compare.Operator, loptype) {
-    fmt.Printf("Type %s doesn't support %s operator. \n", loptype, compare.Operator)
+  if !operationPermitted(expr.Operator, loptype) {
+    fmt.Printf("Type %s doesn't support %s operator. \n", loptype, expr.Operator)
 
     return false
   }
