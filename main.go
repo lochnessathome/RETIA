@@ -53,9 +53,9 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduct
         session.relations = append(session.relations, relation)
       }
 
-      if verbose {
+      //if verbose {
         show.Relation(relation)
-      }
+      //}
 
     } else {
       show.VnameBusy(relation.Vname)
