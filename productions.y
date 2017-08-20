@@ -9,6 +9,8 @@
 
     "RETIA/compare"
     "RETIA/reduction"
+
+    "RETIA/union"
   )
 %}
 
@@ -26,6 +28,8 @@
 
   compare_expr *unit.CompareExpression
   reduction_st *unit.ReductionStatement
+
+  union_st *unit.UnionStatement
 }
 
 %token ID
@@ -33,6 +37,7 @@
 %token RELATION
 %token TUPLE
 %token REDUCTION
+%token UNION
 %token T_INTEGER
 %token T_RATIONAL
 %token T_CHAR
@@ -49,7 +54,7 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st) }
+			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st, $1.union_st) }
 			;
 
 query:			tuple							{ $$.tuple = $1.tuple }
@@ -58,6 +63,8 @@ query:			tuple							{ $$.tuple = $1.tuple }
                         | relation_var                                  	{ $$.relation = $1.relation }
 			| reduction						{ $$.reduction_st = $1.reduction_st }
                         | reduction_var                                     	{ $$.reduction_st = $1.reduction_st }
+                        | union                                             	{ $$.union_st = $1.union_st }
+                        | union_var                                         	{ $$.union_st = $1.union_st }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'			{ $$.relation = relation.Create($3.tuples, "") }
@@ -82,6 +89,12 @@ reduction:		relation REDUCTION '(' compare_expression ')'		{ $$.reduction_st = r
 			;
 
 reduction_var:          ID ASSIGN relation REDUCTION '(' compare_expression ')' { $$.reduction_st = reduction.Create($3.relation, $6.compare_expr, $1.s) }
+                        ;
+
+union:		        relation UNION relation           			{ $$.union_st = union.Create($1.relation, $3.relation, "") }
+                        ;
+
+union_var:          	ID ASSIGN relation UNION relation                       { $$.union_st = union.Create($3.relation, $5.relation, $1.s) }
                         ;
 
 compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare_expr = compare.Create($2.s, $1.s, $3.s, "", "") }

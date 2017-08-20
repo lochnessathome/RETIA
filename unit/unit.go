@@ -2,6 +2,8 @@ package unit
 
 import (
   "strings"
+  "crypto/md5"
+  "encoding/hex"
 )
 
 
@@ -14,6 +16,7 @@ type Component struct {
 type Tuple struct {
   Vname string
   Tname string
+  Hash string
   Components []*Component
 }
 
@@ -38,6 +41,12 @@ type CompareExpression struct {
   Operator string
 }
 
+type UnionStatement struct {
+  Vname string
+  Lrelation *Relation
+  Rrelation *Relation
+}
+
 
 func FormatLetter(letter string) (string) {
   return strings.ToLower(letter)  
@@ -46,3 +55,9 @@ func FormatLetter(letter string) (string) {
 func FormatTypeStr(aname, atype string) (string) {
   return ("[" + aname + "=" + atype + "]")
 }
+
+func FormatHash(text string) (string) {
+  hash := md5.Sum([]byte(text))
+  return hex.EncodeToString(hash[:])
+}
+

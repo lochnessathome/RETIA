@@ -1,6 +1,7 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
 /(WHERE|where)/                 { lval.s = yylex.Text(); return REDUCTION }
+/(UNION|union)/                 { lval.s = yylex.Text(); return UNION }
 /(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
 /(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
 /(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }

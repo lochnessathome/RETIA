@@ -4,8 +4,10 @@ import (
   "os"
 
   "RETIA/unit"
-  "RETIA/reduction"
   "RETIA/show"
+
+  "RETIA/reduction"
+  "RETIA/union"
 )
 
 
@@ -15,7 +17,7 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement, union_st *unit.UnionStatement) {
   if tuple != nil {
     if findRelation(session, tuple.Vname) == nil {
 
@@ -54,7 +56,13 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduct
   if reduction_st != nil {
     erelation := reduction.Eval(reduction_st)
 
-    session.Query(nil, erelation, nil)
+    session.Query(nil, erelation, nil, nil)
+  }
+
+  if union_st != nil {
+    erelation := union.Eval(union_st)
+
+    session.Query(nil, erelation, nil, nil)
   }
 }
 
