@@ -27,24 +27,12 @@ func Eval(statement *unit.IntersectionStatement) *unit.Relation {
   relation.Tname = statement.Lrelation.Tname
   relation.Vname = statement.Vname
 
-  // TODO: how to copy an array?
-
-  for _, l_tuple := range statement.Lrelation.Tuples {
-    relation.Tuples = append(relation.Tuples, l_tuple)
-  }
-
   for _, r_tuple := range statement.Rrelation.Tuples {
-    matches := false
-
     for _, l_tuple := range statement.Lrelation.Tuples {
       if r_tuple.Hash == l_tuple.Hash {
-        matches = true
+        relation.Tuples = append(relation.Tuples, r_tuple)
         break
       }
-    }
-
-    if !matches {
-      relation.Tuples = append(relation.Tuples, r_tuple)
     }
   }
 

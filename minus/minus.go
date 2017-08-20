@@ -27,24 +27,18 @@ func Eval(statement *unit.MinusStatement) *unit.Relation {
   relation.Tname = statement.Lrelation.Tname
   relation.Vname = statement.Vname
 
-  // TODO: how to copy an array?
-
   for _, l_tuple := range statement.Lrelation.Tuples {
-    relation.Tuples = append(relation.Tuples, l_tuple)
-  }
+    present := false
 
-  for _, r_tuple := range statement.Rrelation.Tuples {
-    matches := false
-
-    for _, l_tuple := range statement.Lrelation.Tuples {
-      if r_tuple.Hash == l_tuple.Hash {
-        matches = true
+    for _, r_tuple := range statement.Rrelation.Tuples {
+      if l_tuple.Hash == r_tuple.Hash {
+        present = true
         break
       }
     }
 
-    if !matches {
-      relation.Tuples = append(relation.Tuples, r_tuple)
+    if !present {
+      relation.Tuples = append(relation.Tuples, l_tuple)
     }
   }
 
