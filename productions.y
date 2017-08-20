@@ -66,7 +66,7 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st, $1.union_st, $1.intersection_st, $1.minus_st, $1.times_st, $1.join_st) }
+			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st, $1.union_st, $1.intersection_st, $1.minus_st, $1.times_st, $1.join_st, true) }
 			;
 
 query:			tuple							{ $$.tuple = $1.tuple }

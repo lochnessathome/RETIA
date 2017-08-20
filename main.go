@@ -21,7 +21,7 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement, union_st *unit.UnionStatement, intersection_st *unit.IntersectionStatement, minus_st *unit.MinusStatement, times_st *unit.TimesStatement, join_st *unit.JoinStatement) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement, union_st *unit.UnionStatement, intersection_st *unit.IntersectionStatement, minus_st *unit.MinusStatement, times_st *unit.TimesStatement, join_st *unit.JoinStatement, verbose bool) {
   if tuple != nil {
     if findRelation(session, tuple.Vname) == nil {
 
@@ -33,7 +33,9 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduct
         session.tuples = append(session.tuples, tuple)
       }
 
-      show.Tuple(tuple)
+      if verbose {
+        show.Tuple(tuple)
+      }
 
     } else {
       show.VnameBusy(tuple.Vname)
@@ -51,7 +53,10 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduct
         session.relations = append(session.relations, relation)
       }
 
-      show.Relation(relation)
+      if verbose {
+        show.Relation(relation)
+      }
+
     } else {
       show.VnameBusy(relation.Vname)
     }
@@ -60,41 +65,37 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduct
   if reduction_st != nil {
     erelation := reduction.Eval(reduction_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 
   if union_st != nil {
     erelation := union.Eval(union_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 
   if intersection_st != nil {
     erelation := intersection.Eval(intersection_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 
   if minus_st != nil {
     erelation := minus.Eval(minus_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 
   if times_st != nil {
     erelation := times.Eval(times_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 
   if join_st != nil {
     erelation := join.Eval(join_st)
 
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
+    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil, false)
   }
 }
 
