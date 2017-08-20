@@ -29,6 +29,22 @@ RETIA - акроним для RElaTIonal Algebra
 
 `boys := boys WHERE ( age > 16 )` - произвести сокращение, перезаписать отношение.
 
+### Пересечение (INTERSECT)
+
+`boys INTERSECT RELATION { TUPLE { age integer 16, name char "Alexander" } }`
+
+### Объединение (UNION)
+
+`boys UNION RELATION { TUPLE { age integer 18, name char "Ivan" } }`
+
+### Вычитание (MINUS)
+
+`boys MINUS RELATION { TUPLE { age integer 16, name char "Alexander" } }` - найти все элементы первого отношения, которых нет во втором.
+
+### Декартово произведение (TIMES)
+
+`boys TIMES { TUPLE { gender char "Man"} }` - добавляет к каждому элементу первого отношения каждый элемент второго; атрибуты отношений должны быть разыми.
+
 ## Обработка ошибок
 
 При ошибке обычно выводится сообщение, в управляющую функцию возвращается `nil`, затем программа ожидает новый ввод.
