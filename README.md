@@ -37,7 +37,7 @@ RETIA - акроним для RElaTIonal Algebra
 
 `boys UNION RELATION { TUPLE { age integer 18, name char "Ivan" } }`
 
-### Вычитание (MINUS)
+### Разность (MINUS)
 
 `boys MINUS RELATION { TUPLE { age integer 16, name char "Alexander" } }` - найти все элементы первого отношения, которых нет во втором.
 
