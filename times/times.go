@@ -2,11 +2,12 @@ package times
 
 import (
   "RETIA/unit"
+  "RETIA/tuple"
 )
 
 
 func Create(lrelation, rrelation *unit.Relation, vname string) *unit.TimesStatement {
-  if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
+  if lrelation != nil && rrelation != nil {
     statement := new(unit.TimesStatement)
 
     statement.Lrelation = lrelation
@@ -27,32 +28,47 @@ func Eval(statement *unit.TimesStatement) *unit.Relation {
   relation.Tname = statement.Lrelation.Tname
   relation.Vname = statement.Vname
 
-  // TODO: how to copy an array?
-
   for _, l_tuple := range statement.Lrelation.Tuples {
-    relation.Tuples = append(relation.Tuples, l_tuple)
-  }
-
-  for _, r_tuple := range statement.Rrelation.Tuples {
-    matches := false
-
-    for _, l_tuple := range statement.Lrelation.Tuples {
-      if r_tuple.Hash == l_tuple.Hash {
-        matches = true
-        break
-      }
-    }
-
-    if !matches {
-      relation.Tuples = append(relation.Tuples, r_tuple)
+    for _, r_tuple := range statement.Rrelation.Tuples {
+      m_tuple := mergeTuples(l_tuple, r_tuple)
+      relation.Tuples = append(relation.Tuples, m_tuple)
     }
   }
 
   return relation
 }
 
+func mergeTuples(l_tuple, r_tuple *unit.Tuple) *unit.Tuple {
+  m_components := make([]*unit.Component, 0)
 
-func relationsTypeMatches(lrelation, rrelation *unit.Relation) bool {
-  return (lrelation.Tname == rrelation.Tname)
+  for _, component := range l_tuple.Components {
+    present := false
+
+    for _, m_component := range m_components {
+      if m_component.Aname == component.Aname && m_component.Atype == component.Atype {
+        present = true
+      }
+    }
+
+    if !present {
+      m_components = append(m_components, component)
+    }
+  }
+
+  for _, component := range r_tuple.Components {
+    present := false
+
+    for _, m_component := range m_components {
+      if m_component.Aname == component.Aname && m_component.Atype == component.Atype {
+        present = true
+      }
+    }
+
+    if !present {
+      m_components = append(m_components, component)
+    }
+  }
+
+  return tuple.Create(m_components, "")
 }
 
