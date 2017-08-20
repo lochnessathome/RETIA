@@ -11,6 +11,10 @@
     "RETIA/reduction"
 
     "RETIA/union"
+    "RETIA/intersection"
+    "RETIA/minus"
+    "RETIA/times"
+    "RETIA/join"
   )
 %}
 
@@ -30,6 +34,10 @@
   reduction_st *unit.ReductionStatement
 
   union_st *unit.UnionStatement
+  intersection_st *unit.IntersectionStatement
+  minus_st *unit.MinusStatement
+  times_st *unit.TimesStatement
+  join_st *unit.JoinStatement
 }
 
 %token ID
@@ -38,6 +46,10 @@
 %token TUPLE
 %token REDUCTION
 %token UNION
+%token INTERSECTION
+%token MINUS
+%token TIMES
+%token JOIN
 %token T_INTEGER
 %token T_RATIONAL
 %token T_CHAR
@@ -54,7 +66,7 @@ input:
 			;
 
 line:			'\n'
-			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st, $1.union_st) }
+			| query '\n'						{ cast(yylex).Query($1.tuple, $1.relation, $1.reduction_st, $1.union_st, $1.intersection_st, $1.minus_st, $1.times_st, $1.join_st) }
 			;
 
 query:			tuple							{ $$.tuple = $1.tuple }
@@ -65,6 +77,14 @@ query:			tuple							{ $$.tuple = $1.tuple }
                         | reduction_var                                     	{ $$.reduction_st = $1.reduction_st }
                         | union                                             	{ $$.union_st = $1.union_st }
                         | union_var                                         	{ $$.union_st = $1.union_st }
+                        | intersection                                          { $$.intersection_st = $1.intersection_st }
+                        | intersection_var                                      { $$.intersection_st = $1.intersection_st }
+                        | minus                                                 { $$.minus_st = $1.minus_st }
+                        | minus_var                                             { $$.minus_st = $1.minus_st }
+                        | times                                                 { $$.times_st = $1.times_st }
+                        | times_var                                             { $$.times_st = $1.times_st }
+                        | join                                                  { $$.join_st = $1.join_st }
+                        | join_var                                              { $$.join_st = $1.join_st }
 			;
 
 relation:		RELATION '{' tuples_commalist '}'			{ $$.relation = relation.Create($3.tuples, "") }
@@ -85,6 +105,7 @@ tuple:             	TUPLE '{' components_commalist '}'			{ $$.tuple = tuple.Crea
 tuple_var:		ID ASSIGN TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($5.components, $1.s) }
                         ;
 
+
 reduction:		relation REDUCTION '(' compare_expression ')'		{ $$.reduction_st = reduction.Create($1.relation, $4.compare_expr, "") }
 			;
 
@@ -96,6 +117,31 @@ union:		        relation UNION relation           			{ $$.union_st = union.Creat
 
 union_var:          	ID ASSIGN relation UNION relation                       { $$.union_st = union.Create($3.relation, $5.relation, $1.s) }
                         ;
+
+intersection:           relation INTERSECTION relation                          { $$.intersection_st = intersection.Create($1.relation, $3.relation, "") }
+                        ;
+
+intersection_var:       ID ASSIGN relation INTERSECTION relation                { $$.intersection_st = intersection.Create($3.relation, $5.relation, $1.s) }
+                        ;
+
+minus:                  relation MINUS relation                                 { $$.minus_st = minus.Create($1.relation, $3.relation, "") }
+                        ;
+
+minus_var:              ID ASSIGN relation MINUS relation                       { $$.minus_st = minus.Create($3.relation, $5.relation, $1.s) }
+                        ;
+
+times:                  relation TIMES relation                                 { $$.times_st = times.Create($1.relation, $3.relation, "") }
+                        ;
+
+times_var:              ID ASSIGN relation TIMES relation                       { $$.times_st = times.Create($3.relation, $5.relation, $1.s) }
+                        ;
+
+join:                   relation JOIN relation                                  { $$.join_st = join.Create($1.relation, $3.relation, "") }
+                        ;
+
+join_var:               ID ASSIGN relation JOIN relation                        { $$.join_st = join.Create($3.relation, $5.relation, $1.s) }
+                        ;
+
 
 compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare_expr = compare.Create($2.s, $1.s, $3.s, "", "") }
 			| attribute_name V_COMPARE component_value		{ $$.compare_expr = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }

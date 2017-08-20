@@ -1,13 +1,13 @@
-package union
+package join
 
 import (
   "RETIA/unit"
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.UnionStatement {
+func Create(lrelation, rrelation *unit.Relation, vname string) *unit.JoinStatement {
   if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
-    statement := new(unit.UnionStatement)
+    statement := new(unit.JoinStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
@@ -21,7 +21,7 @@ func Create(lrelation, rrelation *unit.Relation, vname string) *unit.UnionStatem
 }
 
 
-func Eval(statement *unit.UnionStatement) *unit.Relation {
+func Eval(statement *unit.JoinStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname

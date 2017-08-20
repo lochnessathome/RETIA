@@ -2,6 +2,10 @@
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
 /(WHERE|where)/                 { lval.s = yylex.Text(); return REDUCTION }
 /(UNION|union)/                 { lval.s = yylex.Text(); return UNION }
+/(INTERSECT|intersect)/         { lval.s = yylex.Text(); return INTERSECTION }
+/(MINUS|minus)/                 { lval.s = yylex.Text(); return MINUS }
+/(TIMES|times)/                 { lval.s = yylex.Text(); return TIMES }
+/(JOIN|join)/	                { lval.s = yylex.Text(); return JOIN }
 /(INTEGER|integer)/     	{ lval.s = yylex.Text(); return T_INTEGER }
 /(RATIONAL|rational)/   	{ lval.s = yylex.Text(); return T_RATIONAL }
 /(CHAR|char)/           	{ lval.s = yylex.Text(); return T_CHAR }

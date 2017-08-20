@@ -47,6 +47,30 @@ type UnionStatement struct {
   Rrelation *Relation
 }
 
+type IntersectionStatement struct {
+  Vname string
+  Lrelation *Relation
+  Rrelation *Relation
+}
+
+type MinusStatement struct {
+  Vname string
+  Lrelation *Relation
+  Rrelation *Relation
+}
+
+type TimesStatement struct {
+  Vname string
+  Lrelation *Relation
+  Rrelation *Relation
+}
+
+type JoinStatement struct {
+  Vname string
+  Lrelation *Relation
+  Rrelation *Relation
+}
+
 
 func FormatLetter(letter string) (string) {
   return strings.ToLower(letter)  

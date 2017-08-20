@@ -9,7 +9,7 @@ import (
 
 
 func Create(relation *unit.Relation, expr *unit.CompareExpression, vname string) *unit.ReductionStatement {
-  if attributesValid(relation, expr) {
+  if relation != nil && attributesValid(relation, expr) {
     statement := new(unit.ReductionStatement)
 
     statement.Relation = relation

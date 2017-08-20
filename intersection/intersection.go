@@ -1,13 +1,13 @@
-package union
+package intersection
 
 import (
   "RETIA/unit"
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.UnionStatement {
+func Create(lrelation, rrelation *unit.Relation, vname string) *unit.IntersectionStatement {
   if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
-    statement := new(unit.UnionStatement)
+    statement := new(unit.IntersectionStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
@@ -21,7 +21,7 @@ func Create(lrelation, rrelation *unit.Relation, vname string) *unit.UnionStatem
 }
 
 
-func Eval(statement *unit.UnionStatement) *unit.Relation {
+func Eval(statement *unit.IntersectionStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
