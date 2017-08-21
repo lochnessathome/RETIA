@@ -57,6 +57,12 @@ RETIA - акроним для RElaTIonal Algebra
 
 `boys JOIN RELATION { TUPLE { age integer 16, gender char "Teenager" }, TUPLE { age integer 13, gender char "Boy" } }` - объдиняет те кортежи обоих отношений, которые имеют одинаковые значения для общих атрибутов.
 
+## Вложеные запросы
+
+Допустимо объединение нескольких операций в одном запросе:
+
+`RELATION { TUPLE { age integer 16, name char "Alexander" } } UNION RELATION { TUPLE { age integer 13, name char "John" } } WHERE ( age > 13 )` - объединяет два отношения, оставляет кортежи в соответствим с условием.
+
 ## Обработка ошибок
 
 При ошибке обычно выводится сообщение, в управляющую функцию возвращается `nil`, затем программа ожидает новый ввод.
