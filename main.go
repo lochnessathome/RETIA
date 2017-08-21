@@ -4,7 +4,7 @@ import (
   "os"
 
   "RETIA/unit"
-  "RETIA/show"
+  "RETIA/messages"
 )
 
 
@@ -35,10 +35,10 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, assign
         session.relations = append(session.relations, relation)
       }
 
-      show.Relation(relation)
+      messages.Relation(relation)
 
     } else {
-      show.VnameBusy(relation.Vname)
+      messages.VnameBusy(relation.Vname)
     }
 
   } else if tuple != nil {
@@ -52,10 +52,10 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, assign
         session.tuples = append(session.tuples, tuple)
       }
 
-      show.Tuple(tuple)
+      messages.Tuple(tuple)
 
     } else {
-      show.VnameBusy(tuple.Vname)
+      messages.VnameBusy(tuple.Vname)
     }
 
   }
@@ -77,7 +77,7 @@ func (session *Session) Call(vname string) (*unit.Tuple, *unit.Relation) {
     return nil, foundRelation
   }
 
-  show.VnameMissing(vname)
+  messages.VnameMissing(vname)
 
   return nil, nil
 }

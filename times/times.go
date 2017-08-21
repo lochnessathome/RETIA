@@ -21,17 +21,21 @@ func Create(lrelation, rrelation *unit.Relation) *unit.TimesStatement {
 
 
 func Eval(statement *unit.TimesStatement) *unit.Relation {
-  relation := new(unit.Relation)
+  if statement != nil {
+    relation := new(unit.Relation)
 
-  relation.Tname = statement.Lrelation.Tname
+    relation.Tname = statement.Lrelation.Tname
 
-  for _, l_tuple := range statement.Lrelation.Tuples {
-    for _, r_tuple := range statement.Rrelation.Tuples {
-      m_tuple := join.MergeTuples(l_tuple, r_tuple)
-      relation.Tuples = append(relation.Tuples, m_tuple)
+    for _, l_tuple := range statement.Lrelation.Tuples {
+      for _, r_tuple := range statement.Rrelation.Tuples {
+        m_tuple := join.MergeTuples(l_tuple, r_tuple)
+        relation.Tuples = append(relation.Tuples, m_tuple)
+      }
     }
-  }
 
-  return relation
+    return relation
+  } else {
+    return nil
+  }
 }
 

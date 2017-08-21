@@ -2,6 +2,7 @@ package union
 
 import (
   "RETIA/unit"
+  "RETIA/messages"
 )
 
 
@@ -20,36 +21,45 @@ func Create(lrelation, rrelation *unit.Relation) *unit.UnionStatement {
 
 
 func Eval(statement *unit.UnionStatement) *unit.Relation {
-  relation := new(unit.Relation)
+  if statement != nil {
+    relation := new(unit.Relation)
 
-  relation.Tname = statement.Lrelation.Tname
+    relation.Tname = statement.Lrelation.Tname
 
-  // TODO: how to copy an array?
-
-  for _, l_tuple := range statement.Lrelation.Tuples {
-    relation.Tuples = append(relation.Tuples, l_tuple)
-  }
-
-  for _, r_tuple := range statement.Rrelation.Tuples {
-    matches := false
+    // TODO: how to copy an array?
 
     for _, l_tuple := range statement.Lrelation.Tuples {
-      if r_tuple.Hash == l_tuple.Hash {
-        matches = true
-        break
+      relation.Tuples = append(relation.Tuples, l_tuple)
+    }
+
+    for _, r_tuple := range statement.Rrelation.Tuples {
+      matches := false
+
+      for _, l_tuple := range statement.Lrelation.Tuples {
+        if r_tuple.Hash == l_tuple.Hash {
+          matches = true
+          break
+        }
+      }
+
+      if !matches {
+        relation.Tuples = append(relation.Tuples, r_tuple)
       }
     }
 
-    if !matches {
-      relation.Tuples = append(relation.Tuples, r_tuple)
-    }
+    return relation
+  } else {
+    return nil
   }
-
-  return relation
 }
 
 
 func relationsTypeMatches(lrelation, rrelation *unit.Relation) bool {
-  return (lrelation.Tname == rrelation.Tname)
+  if lrelation.Tname == rrelation.Tname {
+    return true
+  } else {
+    messages.TypesMismatch()
+    return true
+  }
 }
 

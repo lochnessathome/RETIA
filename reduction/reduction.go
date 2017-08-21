@@ -5,10 +5,18 @@ import (
   "strconv"
 
   "RETIA/unit"
+
+  "RETIA/messages"
 )
 
 
 func Create(relation *unit.Relation, expr *unit.CompareExpression) *unit.ReductionStatement {
+  if relation != nil {
+    fmt.Printf("REL PRESENT \n")
+
+    messages.Relation(relation)
+  }
+
   if relation != nil && attributesValid(relation, expr) {
     statement := new(unit.ReductionStatement)
 
@@ -23,27 +31,31 @@ func Create(relation *unit.Relation, expr *unit.CompareExpression) *unit.Reducti
 
 
 func Eval(statement *unit.ReductionStatement) *unit.Relation {
-  relation := new(unit.Relation)
+  if statement != nil {
+    relation := new(unit.Relation)
 
-  relation.Tname = statement.Relation.Tname
+    relation.Tname = statement.Relation.Tname
 
-  expr := statement.CompareExpression
+    expr := statement.CompareExpression
 
-  if len(expr.Raname) != 0 {
-    for _, tuple := range statement.Relation.Tuples {
-      if tupleAttrsMatches(tuple, expr.Operator, expr.Laname, expr.Raname) {
-        relation.Tuples = append(relation.Tuples, tuple)
+    if len(expr.Raname) != 0 {
+      for _, tuple := range statement.Relation.Tuples {
+        if tupleAttrsMatches(tuple, expr.Operator, expr.Laname, expr.Raname) {
+          relation.Tuples = append(relation.Tuples, tuple)
+        }
+      }
+    } else {
+      for _, tuple := range statement.Relation.Tuples {
+        if tupleValuesMatches(tuple, expr.Operator, expr.Laname, expr.Rcvalue) {
+          relation.Tuples = append(relation.Tuples, tuple)
+        }
       }
     }
+
+    return relation
   } else {
-    for _, tuple := range statement.Relation.Tuples {
-      if tupleValuesMatches(tuple, expr.Operator, expr.Laname, expr.Rcvalue) {
-        relation.Tuples = append(relation.Tuples, tuple)
-      }
-    }
+    return nil
   }
-
-  return relation
 }
 
 

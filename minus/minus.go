@@ -2,6 +2,7 @@ package minus
 
 import (
   "RETIA/unit"
+  "RETIA/messages"
 )
 
 
@@ -20,30 +21,39 @@ func Create(lrelation, rrelation *unit.Relation) *unit.MinusStatement {
 
 
 func Eval(statement *unit.MinusStatement) *unit.Relation {
-  relation := new(unit.Relation)
+  if statement != nil {
+    relation := new(unit.Relation)
 
-  relation.Tname = statement.Lrelation.Tname
+    relation.Tname = statement.Lrelation.Tname
 
-  for _, l_tuple := range statement.Lrelation.Tuples {
-    present := false
+    for _, l_tuple := range statement.Lrelation.Tuples {
+      present := false
 
-    for _, r_tuple := range statement.Rrelation.Tuples {
-      if l_tuple.Hash == r_tuple.Hash {
-        present = true
-        break
+      for _, r_tuple := range statement.Rrelation.Tuples {
+        if l_tuple.Hash == r_tuple.Hash {
+          present = true
+          break
+        }
+      }
+
+      if !present {
+        relation.Tuples = append(relation.Tuples, l_tuple)
       }
     }
 
-    if !present {
-      relation.Tuples = append(relation.Tuples, l_tuple)
-    }
+    return relation
+  } else {
+    return nil
   }
-
-  return relation
 }
 
 
 func relationsTypeMatches(lrelation, rrelation *unit.Relation) bool {
-  return (lrelation.Tname == rrelation.Tname)
+  if lrelation.Tname == rrelation.Tname {
+    return true
+  } else {
+    messages.TypesMismatch()
+    return true
+  }
 }
 

@@ -1,4 +1,4 @@
-package show
+package messages
 
 import (
   "fmt"
@@ -39,19 +39,8 @@ func VnameMissing(vname string) {
   fmt.Printf("Variable %s not found.\n", vname)
 }
 
-func Reduction(statement *unit.ReductionStatement) {
-  expr := statement.CompareExpression
-
-  fmt.Printf("WHERE ( \n")
-  fmt.Printf("        %s %s", expr.Laname, expr.Operator)
-
-  if len(expr.Raname) != 0 {
-    fmt.Printf(" %s \n", expr.Raname)
-  } else {
-    fmt.Printf(" %s \n", expr.Rcvalue)
-  }
-
-  fmt.Printf("      ) \n")
+func TypesMismatch() {
+  fmt.Printf("Given relations have different types.\n")
 }
 
 

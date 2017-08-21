@@ -21,48 +21,52 @@ func Create(lrelation, rrelation *unit.Relation) *unit.JoinStatement {
 
 
 func Eval(statement *unit.JoinStatement) *unit.Relation {
-  relation := new(unit.Relation)
+  if statement != nil {
+    relation := new(unit.Relation)
 
-  relation.Tname = statement.Lrelation.Tname
+    relation.Tname = statement.Lrelation.Tname
 
-  c_attributes := findCommonAttributes(statement.Lrelation, statement.Rrelation)
+    c_attributes := findCommonAttributes(statement.Lrelation, statement.Rrelation)
 
-  for _, l_tuple := range statement.Lrelation.Tuples {
-    for _, r_tuple := range statement.Rrelation.Tuples {
-      matches := false
-      errors := false
+    for _, l_tuple := range statement.Lrelation.Tuples {
+      for _, r_tuple := range statement.Rrelation.Tuples {
+        matches := false
+        errors := false
 
-      for _, c_attribute := range c_attributes {
-        lcvalue := ""
-        rcvalue := ""
+        for _, c_attribute := range c_attributes {
+          lcvalue := ""
+          rcvalue := ""
 
-        for _, l_component := range l_tuple.Components {
-          if l_component.Aname == c_attribute.Aname && l_component.Atype == c_attribute.Atype {
-            lcvalue = l_component.Cvalue
+          for _, l_component := range l_tuple.Components {
+            if l_component.Aname == c_attribute.Aname && l_component.Atype == c_attribute.Atype {
+              lcvalue = l_component.Cvalue
+            }
+          }
+
+          for _, r_component := range r_tuple.Components {
+            if r_component.Aname == c_attribute.Aname && r_component.Atype == c_attribute.Atype {
+              rcvalue = r_component.Cvalue
+            }
+          }
+
+          if lcvalue == rcvalue {
+            matches = true
+          } else {
+            errors = true
           }
         }
 
-        for _, r_component := range r_tuple.Components {
-          if r_component.Aname == c_attribute.Aname && r_component.Atype == c_attribute.Atype {
-            rcvalue = r_component.Cvalue
-          }
+        if matches && !errors {
+          m_tuple := MergeTuples(l_tuple, r_tuple)
+          relation.Tuples = append(relation.Tuples, m_tuple)
         }
-
-        if lcvalue == rcvalue {
-          matches = true
-        } else {
-          errors = true
-        }
-      }
-
-      if matches && !errors {
-        m_tuple := MergeTuples(l_tuple, r_tuple)
-        relation.Tuples = append(relation.Tuples, m_tuple)
       }
     }
-  }
 
-  return relation
+    return relation
+  } else {
+    return nil
+  }
 }
 
 
