@@ -29,6 +29,14 @@ RETIA - акроним для RElaTIonal Algebra
 
 `boys := boys WHERE ( age > 16 )` - произвести сокращение, перезаписать отношение.
 
+### Проекция (PROJECT)
+
+`RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } } PROJECT (name)`
+
+### Переименование (RENAME)
+
+`RELATION { TUPLE { age integer 16, name char "Alexander" } RENAME (name AS fullname)`
+
 ### Пересечение (INTERSECT)
 
 `boys INTERSECT RELATION { TUPLE { age integer 16, name char "Alexander" } }` - атрибуты отношений должны быть одинаковыми.
