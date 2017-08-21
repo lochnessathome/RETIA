@@ -61,7 +61,7 @@ RETIA - акроним для RElaTIonal Algebra
 
 Допустимо объединение нескольких операций в одном запросе:
 
-`RELATION { TUPLE { age integer 16, name char "Alexander" } } UNION RELATION { TUPLE { age integer 13, name char "John" } } WHERE ( age > 13 )` - объединяет два отношения, оставляет кортежи в соответствим с условием.
+`RELATION { TUPLE { age integer 16, name char "Alexander" } } UNION RELATION { TUPLE { age integer 13, name char "John" } } WHERE ( age > 13 )` - объединяет два отношения, фильтрует кортежи в соответствим с условием.
 
 ## Обработка ошибок
 
