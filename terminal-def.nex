@@ -1,5 +1,6 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
+/(PROJECT|project)/		{ lval.s = yylex.Text(); return PROJECTION }
 /(WHERE|where)/                 { lval.s = yylex.Text(); return REDUCTION }
 /(UNION|union)/                 { lval.s = yylex.Text(); return UNION }
 /(INTERSECT|intersect)/         { lval.s = yylex.Text(); return INTERSECTION }

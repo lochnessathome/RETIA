@@ -15,6 +15,8 @@
 
     "RETIA/reduction"
     "RETIA/compare"
+
+    "RETIA/projection"
   )
 %}
 
@@ -40,6 +42,9 @@
   minus_st *unit.MinusStatement
   times_st *unit.TimesStatement
   join_st *unit.JoinStatement
+
+  anames []string
+  projection_st *unit.ProjectionStatement
 }
 
 %token ID
@@ -62,6 +67,7 @@
 %token V_BOOLEAN
 %token V_COMPARE
 
+%left PROJECTION
 %left REDUCTION
 %left UNION INTERSECTION MINUS TIMES JOIN
 
@@ -89,6 +95,7 @@ relation:		RELATION '{' tuples_commalist '}'			{ $$.relation = relation.Create($
                         | times                                                 { $$.relation = times.Eval($1.times_st) }
                         | join                                                  { $$.relation = join.Eval($1.join_st) }
 			| reduction						{ $$.relation = reduction.Eval($1.reduction_st) }
+			| projection						{ $$.relation = projection.Eval($1.projection_st) }
 			;
 
 tuples_commalist:   	tuple	                                        	{ $$.tuples = append($$.tuples, $1.tuple) }
@@ -124,6 +131,14 @@ reduction:		relation REDUCTION '(' compare_expression ')'		{ $$.reduction_st = r
 
 compare_expression:	attribute_name V_COMPARE attribute_name			{ $$.compare_expr = compare.Create($2.s, $1.s, $3.s, "", "") }
 			| attribute_name V_COMPARE component_value		{ $$.compare_expr = compare.Create($2.s, $1.s, "", $3.s, $3.ctype) }
+			;
+
+
+projection:		relation PROJECTION '{' anames_commalist  '}'		{ $$.projection_st = projection.Create($1.relation, $4.anames) }
+			;
+
+anames_commalist:	attribute_name						{ $$.anames = append($$.anames, $1.s) }
+			| anames_commalist ',' attribute_name			{ $$.anames = append($$.anames, $3.s) }
 			;
 
 

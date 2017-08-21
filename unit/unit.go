@@ -40,6 +40,11 @@ type CompareExpression struct {
   Operator string
 }
 
+type ProjectionStatement struct {
+  Relation *Relation
+  Anames []string
+}
+
 type UnionStatement struct {
   Lrelation *Relation
   Rrelation *Relation
