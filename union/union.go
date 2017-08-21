@@ -5,14 +5,12 @@ import (
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.UnionStatement {
+func Create(lrelation, rrelation *unit.Relation) *unit.UnionStatement {
   if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
     statement := new(unit.UnionStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -25,7 +23,6 @@ func Eval(statement *unit.UnionStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
-  relation.Vname = statement.Vname
 
   // TODO: how to copy an array?
 

@@ -6,14 +6,12 @@ import (
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.TimesStatement {
+func Create(lrelation, rrelation *unit.Relation) *unit.TimesStatement {
   if lrelation != nil && rrelation != nil {
     statement := new(unit.TimesStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -26,7 +24,6 @@ func Eval(statement *unit.TimesStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
-  relation.Vname = statement.Vname
 
   for _, l_tuple := range statement.Lrelation.Tuples {
     for _, r_tuple := range statement.Rrelation.Tuples {

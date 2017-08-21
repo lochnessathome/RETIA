@@ -7,14 +7,14 @@ import (
 )
 
 
-func Create(tuples []*unit.Tuple, vname string) *unit.Relation {
+func Create(tuples []*unit.Tuple) *unit.Relation {
   if len(tuples) != 0 && tuplesValid(tuples, tuples[0].Tname) {
     relation := new(unit.Relation)
 
     relation.Tname = tuples[0].Tname
 
     relation.Tuples = tuples
-    relation.Vname = unit.FormatLetter(vname)
+    relation.Vname = "" /* unit.FormatLetter() */
 
     return relation
   } else {

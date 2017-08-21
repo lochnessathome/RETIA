@@ -5,13 +5,6 @@ import (
 
   "RETIA/unit"
   "RETIA/show"
-
-  "RETIA/reduction"
-  "RETIA/union"
-  "RETIA/intersection"
-  "RETIA/minus"
-  "RETIA/times"
-  "RETIA/join"
 )
 
 
@@ -21,37 +14,15 @@ type Session struct {
 }
 
 
-func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, reduction_st *unit.ReductionStatement, union_st *unit.UnionStatement, intersection_st *unit.IntersectionStatement, minus_st *unit.MinusStatement, times_st *unit.TimesStatement, join_st *unit.JoinStatement) {
+func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, assign string) {
 
-  if reduction_st != nil {
+  if len(assign) != 0 {
 
-    erelation := reduction.Eval(reduction_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
+    if relation != nil {
+      relation.Vname = unit.FormatLetter(assign)
 
-  } else if union_st != nil {
-
-    erelation := union.Eval(union_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
-  } else if intersection_st != nil {
-
-    erelation := intersection.Eval(intersection_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
-  } else if minus_st != nil {
-
-    erelation := minus.Eval(minus_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
-  } else if times_st != nil {
-
-    erelation := times.Eval(times_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
-
-  } else if join_st != nil {
-
-    erelation := join.Eval(join_st)
-    session.Query(nil, erelation, nil, nil, nil, nil, nil, nil)
+      session.Query(nil, relation, "")
+    }
 
   } else if relation != nil {
 

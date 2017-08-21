@@ -8,14 +8,12 @@ import (
 )
 
 
-func Create(relation *unit.Relation, expr *unit.CompareExpression, vname string) *unit.ReductionStatement {
+func Create(relation *unit.Relation, expr *unit.CompareExpression) *unit.ReductionStatement {
   if relation != nil && attributesValid(relation, expr) {
     statement := new(unit.ReductionStatement)
 
     statement.Relation = relation
     statement.CompareExpression = expr
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -28,7 +26,6 @@ func Eval(statement *unit.ReductionStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Relation.Tname
-  relation.Vname = statement.Vname
 
   expr := statement.CompareExpression
 

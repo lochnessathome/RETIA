@@ -28,7 +28,6 @@ type Relation struct {
 
 
 type ReductionStatement struct {
-  Vname string
   Relation *Relation
   CompareExpression *CompareExpression
 }
@@ -42,31 +41,26 @@ type CompareExpression struct {
 }
 
 type UnionStatement struct {
-  Vname string
   Lrelation *Relation
   Rrelation *Relation
 }
 
 type IntersectionStatement struct {
-  Vname string
   Lrelation *Relation
   Rrelation *Relation
 }
 
 type MinusStatement struct {
-  Vname string
   Lrelation *Relation
   Rrelation *Relation
 }
 
 type TimesStatement struct {
-  Vname string
   Lrelation *Relation
   Rrelation *Relation
 }
 
 type JoinStatement struct {
-  Vname string
   Lrelation *Relation
   Rrelation *Relation
 }

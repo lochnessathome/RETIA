@@ -5,14 +5,12 @@ import (
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.IntersectionStatement {
+func Create(lrelation, rrelation *unit.Relation) *unit.IntersectionStatement {
   if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
     statement := new(unit.IntersectionStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -25,7 +23,6 @@ func Eval(statement *unit.IntersectionStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
-  relation.Vname = statement.Vname
 
   for _, r_tuple := range statement.Rrelation.Tuples {
     for _, l_tuple := range statement.Lrelation.Tuples {

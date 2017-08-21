@@ -6,14 +6,12 @@ import (
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.JoinStatement {
+func Create(lrelation, rrelation *unit.Relation) *unit.JoinStatement {
   if lrelation != nil && rrelation != nil {
     statement := new(unit.JoinStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -26,7 +24,6 @@ func Eval(statement *unit.JoinStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
-  relation.Vname = statement.Vname
 
   c_attributes := findCommonAttributes(statement.Lrelation, statement.Rrelation)
 

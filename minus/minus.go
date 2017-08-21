@@ -5,14 +5,12 @@ import (
 )
 
 
-func Create(lrelation, rrelation *unit.Relation, vname string) *unit.MinusStatement {
+func Create(lrelation, rrelation *unit.Relation) *unit.MinusStatement {
   if lrelation != nil && rrelation != nil && relationsTypeMatches(lrelation, rrelation) {
     statement := new(unit.MinusStatement)
 
     statement.Lrelation = lrelation
     statement.Rrelation = rrelation
-
-    statement.Vname = unit.FormatLetter(vname)
 
     return statement
   } else {
@@ -25,7 +23,6 @@ func Eval(statement *unit.MinusStatement) *unit.Relation {
   relation := new(unit.Relation)
 
   relation.Tname = statement.Lrelation.Tname
-  relation.Vname = statement.Vname
 
   for _, l_tuple := range statement.Lrelation.Tuples {
     present := false
