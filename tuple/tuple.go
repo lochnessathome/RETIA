@@ -14,7 +14,7 @@ func (a ByAname) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByAname) Less(i, j int) bool { return a[i].Aname < a[j].Aname }
 
 
-func Create(components []*unit.Component, vname string) *unit.Tuple {
+func Create(components []*unit.Component) *unit.Tuple {
   if len(components) != 0 && componentsValid(components) {
     tuple := new(unit.Tuple)
 
@@ -27,7 +27,6 @@ func Create(components []*unit.Component, vname string) *unit.Tuple {
     tuple.Hash = unit.FormatHash(tuple.Hash)
 
     tuple.Components = components
-    tuple.Vname = unit.FormatLetter(vname)
 
     return tuple
   } else {

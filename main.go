@@ -22,6 +22,10 @@ func (session *Session) Query(tuple *unit.Tuple, relation *unit.Relation, assign
       relation.Vname = unit.FormatLetter(assign)
 
       session.Query(nil, relation, "")
+    } else if tuple != nil {
+      tuple.Vname = unit.FormatLetter(assign)
+
+      session.Query(tuple, nil, "")
     }
 
   } else if relation != nil {

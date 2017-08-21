@@ -90,7 +90,7 @@ line:				'\n'
 				;
 
 query:				tuple							{ $$.tuple = $1.tuple }
-				| tuple_var						{ $$.tuple = $1.tuple }
+				| ID ASSIGN tuple					{ $$.assign = $1.s; $$.tuple = $3.tuple }
 				| relation						{ $$.relation = $1.relation }
                         	| ID ASSIGN relation	                                { $$.assign = $1.s; $$.relation = $3.relation }
 				;
@@ -111,12 +111,9 @@ tuples_commalist:   		tuple	                                        	{ $$.tuples
                         	| tuples_commalist ',' tuple		        	{ $$.tuples = append($$.tuples, $3.tuple) }
                         	;
 
-tuple:             		TUPLE '{' components_commalist '}'			{ $$.tuple = tuple.Create($3.components, "") }
+tuple:             		TUPLE '{' components_commalist '}'			{ $$.tuple = tuple.Create($3.components) }
 				| ID							{ $$.tuple, $$.relation = cast(yylex).Call($1.s) }
 				;
-
-tuple_var:			ID ASSIGN TUPLE '{' components_commalist '}'		{ $$.tuple = tuple.Create($5.components, $1.s) }
-                        	;
 
 union:		        	relation UNION relation           			{ $$.union_st = union.Create($1.relation, $3.relation) }
                         	;
