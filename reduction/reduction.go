@@ -11,12 +11,6 @@ import (
 
 
 func Create(relation *unit.Relation, expr *unit.CompareExpression) *unit.ReductionStatement {
-  if relation != nil {
-    fmt.Printf("REL PRESENT \n")
-
-    messages.Relation(relation)
-  }
-
   if relation != nil && attributesValid(relation, expr) {
     statement := new(unit.ReductionStatement)
 

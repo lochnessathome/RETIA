@@ -62,6 +62,9 @@
 %token V_BOOLEAN
 %token V_COMPARE
 
+%left REDUCTION
+%left UNION INTERSECTION MINUS TIMES JOIN
+
 %%
 input:				
 			| input line		
