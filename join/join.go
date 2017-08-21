@@ -103,11 +103,6 @@ func MergeTuples(l_tuple, r_tuple *unit.Tuple) *unit.Tuple {
   return tuple.Create(m_components, "")
 }
 
-
-func relationsTypeMatches(lrelation, rrelation *unit.Relation) bool {
-  return (lrelation.Tname == rrelation.Tname)
-}
-
 func findCommonAttributes(lrelation, rrelation *unit.Relation) []*unit.Component { 
   attributes := make([]*unit.Component, 0)
 

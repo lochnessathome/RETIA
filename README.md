@@ -31,15 +31,15 @@ RETIA - акроним для RElaTIonal Algebra
 
 ### Пересечение (INTERSECT)
 
-`boys INTERSECT RELATION { TUPLE { age integer 16, name char "Alexander" } }`
+`boys INTERSECT RELATION { TUPLE { age integer 16, name char "Alexander" } }` - атрибуты отношений должны быть одинаковыми.
 
 ### Объединение (UNION)
 
-`boys UNION RELATION { TUPLE { age integer 18, name char "Ivan" } }`
+`boys UNION RELATION { TUPLE { age integer 18, name char "Ivan" } }` - атрибуты отношений должны быть одинаковыми.
 
 ### Разность (MINUS)
 
-`boys MINUS RELATION { TUPLE { age integer 16, name char "Alexander" } }` - найти все элементы первого отношения, которых нет во втором.
+`boys MINUS RELATION { TUPLE { age integer 16, name char "Alexander" } }` - найти все элементы первого отношения, которых нет во втором; атрибуты отношений должны быть одинаковыми.
 
 ### Декартово произведение (TIMES)
 
