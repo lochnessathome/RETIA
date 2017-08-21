@@ -45,6 +45,16 @@ type ProjectionStatement struct {
   Anames []string
 }
 
+type RenameStatement struct {
+  Relation *Relation
+  Expressions []*RenameExpression
+}
+
+type RenameExpression struct {
+  Laname string
+  Raname string
+}
+
 type UnionStatement struct {
   Lrelation *Relation
   Rrelation *Relation

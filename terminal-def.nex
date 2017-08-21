@@ -1,5 +1,7 @@
 /(TUPLE|tuple)/         	{ lval.s = yylex.Text(); return TUPLE }
 /(RELATION|relation)/           { lval.s = yylex.Text(); return RELATION }
+/(RENAME|rename)/               { lval.s = yylex.Text(); return RENAME }
+/(AS|as)/               	{ lval.s = yylex.Text(); return AS }
 /(PROJECT|project)/		{ lval.s = yylex.Text(); return PROJECTION }
 /(WHERE|where)/                 { lval.s = yylex.Text(); return REDUCTION }
 /(UNION|union)/                 { lval.s = yylex.Text(); return UNION }
