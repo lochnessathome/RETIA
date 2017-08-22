@@ -1,25 +1,50 @@
 # RETIA
 RETIA - акроним для RElaTIonal Algebra
 
-## Примеры использования
 
-### Кортежи
+## Введение
 
-`TUPLE { age integer 18, name char "Ivan" }` - создать неименнованный кортеж.
+Большая часть операция производится с отношениями (Relation; SQL аналог - таблица). Отношение - это множество кортежей (Tiple; SQL аналог - строка). Реляционная алгебра предполагает 8 базовых операций над отношениями: объединение (union), пересечение (intersection), соединение (join), произведение (times), разность (minus), проекция (projection), сокращение (reduction) и переименование (rename).
 
-`boy := TUPLE { age integer 16, name char "Alexander" }` - создать именованный кортеж.
 
-`boy` - прочитать переменную.
+### Как создать кортеж?
 
-### Отношения
+Кортеж используется исключительно как элемент отношения. Объявить его можно так:
 
-`RELATION { TUPLE { age integer 18, name char "Ivan" } }` - создать неименнованное отношение.
+`TUPLE { age integer 18, name char "Ivan" }`
 
-`RELATION { TUPLE { age integer 18, name char "Ivan" }, boy }` - создать неименнованное отношение, включив ранее заданный кортеж, указав его имя.
+Для удобства, ему можно дать имя:
 
-`boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }` - создать именованное отношение.
+`boy := TUPLE { age integer 16, name char "Alexander" }`
 
-`boys` - прочитать переменную.
+Затем можно прочитать переменную:
+
+`boy`
+
+
+### Компоненты и атрибуты кортежа.
+
+В записи `{ age integer 18, name char "Ivan" }` два компонента (разделённых запятой). Компонент `age integer 18` делится, в свою очередь, на атрибут и значение. Атрибут - это пара имя-тип - `age integer`, значение - 18.
+
+
+### Как создать отношение?
+
+Можно создать отношение с одним элементом (кортежом):
+
+`RELATION { TUPLE { age integer 18, name char "Ivan" } }`
+
+Или:
+
+`RELATION { boy }`
+
+Часто бывает полезно (но не необходимо) дать отношению имя:
+
+`boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }`
+
+Так же, как и с кортежом, можно обратиться по имени:
+
+`boys`
+
 
 ### Сокращение (WHERE)
 
