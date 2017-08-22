@@ -48,6 +48,39 @@ RETIA - акроним для RElaTIonal Algebra
 `boys`
 
 
+## Операции
+
+
+### Объединение (union)
+
+Вход:
+
+`boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }`
+
+`girls := RELATION { TUPLE { age integer 18, name char "Julia" } }`
+
+`boys UNION girls`
+
+Выход:
+
+`
+RELATION { 
+         TUPLE { 
+                 (age integer 16) 
+                 (name char "Alexander") 
+               } 
+         TUPLE { 
+                 (age integer 13) 
+                 (name char "John") 
+               } 
+         TUPLE { 
+                 (age integer 18) 
+                 (name char "Julia") 
+               } 
+         }
+`
+
+
 ### Сокращение (WHERE)
 
 `RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } } WHERE ( age >= 16 )` - произвести сокращение, создать новое неименованное отношение.
