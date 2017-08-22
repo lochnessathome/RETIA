@@ -72,6 +72,6 @@ func buildTuple(orig_tuple *unit.Tuple, anames []string) *unit.Tuple {
     }
   }
 
-  return tuple.Create(components, "")  
+  return tuple.Create(components)  
 }
 

@@ -101,7 +101,7 @@ func MergeTuples(l_tuple, r_tuple *unit.Tuple) *unit.Tuple {
     }
   }
 
-  return tuple.Create(m_components, "")
+  return tuple.Create(m_components)
 }
 
 func findCommonAttributes(lrelation, rrelation *unit.Relation) []*unit.Component { 

@@ -106,6 +106,6 @@ func buildTuple(orig_tuple *unit.Tuple, expressions []*unit.RenameExpression) *u
     }
   }
 
-  return tuple.Create(components, "")  
+  return tuple.Create(components)  
 }
 
