@@ -189,7 +189,7 @@ RELATION {
 ```
 
 
-### Сокращение (WHERE)
+### Сокращение (where)
 
 `a WHERE ( age > 13 )`
 
@@ -203,7 +203,7 @@ RELATION {
 ```
 
 
-### Проекция (PROJECT)
+### Проекция (project)
 
 `a PROJECT ( name )`
 
@@ -219,7 +219,7 @@ RELATION {
 ```
 
 
-### Переименование (RENAME)
+### Переименование (rename)
 
 `c RENAME ( gender AS sex )`
 
