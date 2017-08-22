@@ -63,7 +63,7 @@ RETIA - акроним для RElaTIonal Algebra
 
 Выход:
 
-`
+```
 RELATION { 
          TUPLE { 
                  (age integer 16) 
@@ -78,7 +78,7 @@ RELATION {
                  (name char "Julia") 
                } 
          }
-`
+```
 
 
 ### Сокращение (WHERE)
