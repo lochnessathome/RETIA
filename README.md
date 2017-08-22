@@ -50,18 +50,16 @@ RETIA - акроним для RElaTIonal Algebra
 
 ## Операции
 
+Предвариательно нужно создать два отношения:
+
+`a := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }`
+
+`b := RELATION { TUPLE { age integer 18, name char "Julia" }, TUPLE { age integer 16, name char "Alexander" } }`
+
 
 ### Объединение (union)
 
-Вход:
-
-`boys := RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } }`
-
-`girls := RELATION { TUPLE { age integer 18, name char "Julia" } }`
-
-`boys UNION girls`
-
-Выход:
+`a UNION b`
 
 ```
 RELATION { 
@@ -81,59 +79,176 @@ RELATION {
 ```
 
 
+### Пересечение (intersect)
+
+`a INTERSECT b`
+
+
+```
+RELATION {
+         TUPLE { 
+                 (age integer 16)
+                 (name char "Alexander")
+               } 
+         }
+```
+
+
+### Натуральное соединение (join)
+
+Создадим отношение с новыми атрибутами:
+
+`c := RELATION { TUPLE { name char "Julia", gender char "Girl" }, TUPLE { name char "Alexander", gender char "Boy" }}`
+
+Соединение:
+
+`a JOIN c`
+
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 16) 
+                 (gender char "Boy") 
+                 (name char "Alexander") 
+               } 
+         }
+```
+
+Мы потеряли Джулию, давайте вернём её в строй:
+
+`a UNION b JOIN c`
+
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 16) 
+                 (gender char "Boy") 
+                 (name char "Alexander") 
+               } 
+         TUPLE { 
+                 (age integer 18) 
+                 (gender char "Girl") 
+                 (name char "Julia") 
+               } 
+         }
+```
+
+
+### Декартово произведение (times)
+
+`b TIMES c`
+
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 18) 
+                 (gender char "Girl") 
+                 (name char "Julia") 
+               } 
+         TUPLE { 
+                 (age integer 18) 
+                 (gender char "Boy") 
+                 (name char "Julia") 
+               } 
+         TUPLE { 
+                 (age integer 16) 
+                 (gender char "Girl") 
+                 (name char "Alexander") 
+               } 
+         TUPLE { 
+                 (age integer 16) 
+                 (gender char "Boy") 
+                 (name char "Alexander") 
+               } 
+         }
+```
+
+
+### Разность (minus)
+
+`a MINUS b`
+
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 13) 
+                 (name char "John") 
+               } 
+         } 
+```
+
+`b MINUS a`
+
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 18) 
+                 (name char "Julia") 
+               } 
+         }
+```
+
+
 ### Сокращение (WHERE)
 
-`RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } } WHERE ( age >= 16 )` - произвести сокращение, создать новое неименованное отношение.
+`a WHERE ( age > 13 )`
 
-`boys WHERE ( age > 16 )` - произвести сокращение, создать новое неименованное отношение.
+```
+RELATION { 
+         TUPLE { 
+                 (age integer 16) 
+                 (name char "Alexander") 
+               } 
+         } 
+```
 
-`boys := boys WHERE ( age > 16 )` - произвести сокращение, перезаписать отношение.
 
 ### Проекция (PROJECT)
 
-`RELATION { TUPLE { age integer 16, name char "Alexander" }, TUPLE { age integer 13, name char "John" } } PROJECT (name)`
+`a PROJECT ( name )`
+
+```
+RELATION { 
+         TUPLE { 
+                 (name char "Alexander") 
+               } 
+         TUPLE { 
+                 (name char "John") 
+               } 
+         } 
+```
+
 
 ### Переименование (RENAME)
 
-`RELATION { TUPLE { age integer 16, name char "Alexander" } RENAME (name AS fullname)`
+`c RENAME ( gender AS sex )`
 
-### Пересечение (INTERSECT)
+```
+RELATION { 
+         TUPLE { 
+                 (name char "Julia") 
+                 (sex char "Girl") 
+               } 
+         TUPLE { 
+                 (name char "Alexander") 
+                 (sex char "Boy") 
+               } 
+         } 
+```
 
-`boys INTERSECT RELATION { TUPLE { age integer 16, name char "Alexander" } }` - атрибуты отношений должны быть одинаковыми.
 
-### Объединение (UNION)
+## Ограничения
 
-`boys UNION RELATION { TUPLE { age integer 18, name char "Ivan" } }` - атрибуты отношений должны быть одинаковыми.
+* Значение должно соответстовать указанному типу. Приведения типов нет и не будет.
 
-### Разность (MINUS)
+* Типы всех кортежей отношения одинаковы.
 
-`boys MINUS RELATION { TUPLE { age integer 16, name char "Alexander" } }` - найти все элементы первого отношения, которых нет во втором; атрибуты отношений должны быть одинаковыми.
+* Нельзя создать пустое отношение.
 
-### Декартово произведение (TIMES)
+* Аргументы в операции сокращения должны быть одного типа.
 
-`boys TIMES { TUPLE { gender char "Man"} }` - добавляет к каждому элементу первого отношения каждый элемент второго; атрибуты отношений должны быть разыми.
 
-### Натуральное соединение (JOIN)
-
-`boys JOIN RELATION { TUPLE { age integer 16, gender char "Teenager" }, TUPLE { age integer 13, gender char "Boy" } }` - объдиняет те кортежи обоих отношений, которые имеют одинаковые значения для общих атрибутов.
-
-## Вложеные запросы
-
-Допустимо объединение нескольких операций в одном запросе:
-
-`RELATION { TUPLE { age integer 16, name char "Alexander" } } UNION RELATION { TUPLE { age integer 13, name char "John" } } WHERE ( age > 13 )` - объединяет два отношения, фильтрует кортежи в соответствим с условием.
-
-## Обработка ошибок
+## Детали реализации
 
 При ошибке обычно выводится сообщение, в управляющую функцию возвращается `nil`, затем программа ожидает новый ввод.
-
-* Проверяется соответствие значения заявленному типу.
-
-* Проверяется что типы всех кортежей, входящих в отношение, одинаковы.
-
-* Проверяется что множество кортежей, входящих в отношение, ненулевое.
-
-* Проверяется, что аргументы в сокращении принадлежат одному типу.
-
-* Проверяется, что оператор в сокращении применим к типу аргументов.
 
